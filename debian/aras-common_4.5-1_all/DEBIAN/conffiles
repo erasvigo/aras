@@ -1,0 +1,6 @@
+/etc/aras/aras.conf
+/etc/aras/aras.schedule
+/etc/aras/aras.block
+/etc/logrotate.d/aras
+/etc/cron.daily/aras-download-content
+/etc/cron.hourly/aras-update-content

@@ -1,0 +1,402 @@
+ARAS.CONF(5)                                                      ARAS.CONF(5)
+
+
+
+NAME
+       aras.conf - Configuration file for ARAS - A Radio Automation System.
+
+DESCRIPTION
+       aras.conf  is  the configuration file for ARAS. These are the file con‐
+       figuration tags:
+
+OPTIONS
+       The ARAS configuration file contains comments and some commands, one of
+       them in each line:
+
+
+       Lines with a # character at the beginning are comments.
+
+
+       ConfigurationPeriod value
+              Defines  the period in miliseconds for configuration update, for
+              example:
+
+              ConfigurationPeriod 10000
+
+
+       ScheduleFile my_schedule_file_path
+              Defines the current schedule file.  Quotation  marks  should  be
+              used if my_schedule_file_path contains whitespaces.
+
+
+       BlockFile my_block_file_path
+              Defines  the  current  block  description  file. Quotation marks
+              should be used if my_block_file_path contains whitespaces.
+
+
+       LogFile my_log_file_path
+              Defines the current log file. Quotation marks should be used  if
+              my_log_file_path contains whitespaces.
+
+
+       EnginePeriod value
+              Defines  the  period in miliseconds for the internal engine, for
+              example:
+
+              DefaultTimeout 100
+
+
+       ScheduleMode schedule_mode
+              Defines the behaviour of the scheduler. schedule_mode  parameter
+              can take some values:
+
+              hard in order to set an inflexible scheduler.
+              soft in order to set a flexible scheduler.
+
+
+       DefaultBlockMode default_block_mode
+              Defines  the default block behaviour. default_block_mode parame‐
+              ter can take some values:
+
+              off in order to disable the default block support.
+              on in order to enable the default block support.
+
+              If default_block_mode is on, the default block is played when  a
+              block finishes before the beginning of the next block.
+
+
+       DefaultBlock my_default_block
+              Defines the default block, for example:
+
+              DefaultBlock my_default_block
+
+
+       FadeOutSlope value
+              Defines the fade out slope, for example:
+
+              FadeOutSlope 0.2
+
+
+       FadeOutTime value
+              Defines the fade out time in miliseconds, for example:
+
+              FadeOutTime 2000
+
+
+       TimeSignalMode time_signal_mode
+              Defines  the  time  signal  mode. time_signal_mode parameter can
+              take some values:
+
+              off in order to disable time signal support.
+              hour in order to define hourly time signal support.
+              half in order to define hourly and half past  time  signal  sup‐
+              port.
+
+
+       TimeSignalBlock my_time_signal_file_block
+              Defines the time signal block, for example:
+
+              TimeSignalBlock my_time_signal_block
+
+              Quotation  marks should be used if my_time_signal_block contains
+              whitespaces.
+
+
+       TimeSignalAdvance my_time_signal_advance_value
+              Defines the advancement of time signal block, for example:
+
+              TimeSignalAdvance 5000
+
+
+       BlockPlayerName volume
+              Defines the block player name, for example:
+
+              BlockPlayerName my_block_player
+
+
+       BlockPlayerAudioOutput block_player_audio_output
+              Defines  the  GStreamer  audio  sink  for  the   block   player,
+              block_player_audio_output parameter can take at least these val‐
+              ues:
+
+              auto
+              pulseaudio
+              alsa
+              jack
+              oss
+              oss4
+              openal
+              file
+
+              If block_player_audio_output is jack, the audio output  is  dis‐
+              connected  by  default at the beginning of each loaded file. You
+              should manage JACK connections externally.
+
+              In the same way, if block_player_audio_output is file, the audio
+              output  may  be disconnected by default at the beginning of each
+              loaded file. You may manage pipelines externally.
+
+
+       BlockPlayerAudioDevice block_player_audio_device
+              Defines  the  block  player  audio  device  depending   on   the
+              block_player_audio_output value and the system configuration.
+
+              If  block_player_audio_output  is  jack,  it  defines  the  JACK
+              server, for example:
+
+              BlockPlayerAudioDevice default
+
+              If block_player_audio_output is  file,  it  defines  the  output
+              file, for example:
+
+              BlockPlayerAudioDevice "/dev/stdout"
+
+              This allows to deliver an audio stream to other application, for
+              example:
+
+              aras-daemon aras.conf | aplay -c 2 -f S16_LE  -r 48000
+
+              Obviously, it is possible to use named pipes:
+
+              BlockPlayerAudioDevice "my_pipe"
+
+              This allows to deliver an audio stream to other application, for
+              example:
+
+              aras-daemon  aras.conf  &  tail -f -n +1 my_pipe | aplay -c 2 -f
+              S16_LE  -r 48000
+
+
+       BlockPlayerVolume volume
+              Defines the block player volume from 0 to 10, for example:
+
+              BlockPlayerVolume 0.5
+
+
+       BlockPlayerSampleRate sample_rate
+              Defines the block player sample rate in Hz, for example:
+
+              BlockPlayerSampleRate 48000
+
+
+       BlockPlayerChannels channels
+              Defines the number of channels for the block player,  for  exam‐
+              ple:
+
+              BlockPlayerChannels 2
+
+
+       BlockPlayerVideoOutput block_player_video_output
+              Defines   the   GStreamer  video  sink  for  the  block  player,
+              block_player_video_output parameter can take at least these val‐
+              ues:
+
+              auto
+              v4l2
+              x
+              xv
+              fb
+              gl
+              file
+
+
+       BlockPlayerVideoDevice block_player_video_device
+              Defines the video device for the block player, for example:
+
+              BlockPlayerVideoDevice default
+
+
+       BlockPlayerVideoDisplay block_player_video_display
+              Defines the display for the block player, for example:
+
+              BlockPlayerVideoDisplay :0
+
+
+       BlockPlayerDisplayResolution block_player_display_resolution
+              Defines  the  display resolution for the block player, for exam‐
+              ple:
+
+              BlockPlayerDisplayResolution 1920x1080
+
+
+       TimeSignalPlayerName name
+              Defines the time signal player name, for example:
+
+              TimeSignalPlayerName my_time_signal_player
+
+
+       TimeSignalPlayerAudioOutput time_signal_player_audio_output
+              Defines the GStreamer audio sink for  the  time  signal  player,
+              time_signal_player_audio_output  parameter  can  take  at  least
+              these values:
+
+              auto
+              pulseaudio
+              alsa
+              jack
+              oss
+              oss4
+              openal
+              file
+
+              If time_signal_player_audio_output is jack, the audio output  is
+              disconnected  by  default  at the beginning of each loaded file.
+              You should manage JACK connections externally.
+
+              In the same way, if time_signal_player_audio_output is file, the
+              audio  output may be disconnected by default at the beginning of
+              each loaded file. You should manage pipelines externally.
+
+
+       TimeSignalPlayerAudioDevice time_signal_player_audio_device
+              Defines the time signal player audio  device  depending  on  the
+              time_signal_player_audio_output  value and the system configura‐
+              tion. If time_signal_player_audio_output is jack, it defines the
+              JACK server, for example:
+
+              TimeSignalPlayerAudioDevice default
+
+              If  time_signal_player_output  is  file,  it  defines the output
+              file, for example:
+
+              TimeSignalPlayerAudioDevice "/dev/stdout"
+
+              This allows to deliver an audio stream to other application, for
+              example:
+
+              aras-daemon aras.conf | aplay -c 2 -f S16_LE  -r 48000
+
+              Obviously, it is possible to use named pipes:
+
+              TimeSignalPlayerAudioDevice "my_pipe"
+
+              This allows to deliver an audio stream to other application, for
+              example:
+
+              aras-daemon aras.conf & tail -f -n +1 my_pipe | aplay  -c  2  -f
+              S16_LE  -r 48000
+
+
+       TimeSignalPlayerVolume volume
+              Defines the time signal player volume from 0 to 10, for example:
+
+              TimeSignalPlayerVolume 0.5
+
+
+       TimeSignalSampleRate sample_rate
+              Defines the time signal player sample rate in Hz, for example:
+
+              TimeSignalPlayerSampleRate 48000
+
+
+       TimeSignalPlayerChannels channels
+              Defines  the  number of channels for the time signal player, for
+              example:
+
+              TimeSignalPlayerChannels 2
+
+
+       TimeSignalPlayerVideoOutput time_signal_player_video_output
+              Defines the GStreamer video sink for  the  time  signal  player,
+              time_signal_player_video_output  parameter  can  take  at  least
+              these values:
+
+              auto
+              v4l2
+              x
+              xv
+              fb
+              gl
+              file
+
+
+       TimeSignalPlayerVideoDevice time_signal_player_video_device
+              Defines the video device for the time signal player,  for  exam‐
+              ple:
+
+              TimeSignalPlayerVideoDevice default
+
+
+       TimeSignalPlayerVideoDisplay time_signal_player_video_display
+              Defines the display for the time signal player, for example:
+
+              TimeSignalPlayerVideoDisplay :0
+
+
+       TimeSignalPlayerDisplayResolution time_signal_player_display_resolution
+              Defines  the  display resolution for the time signal player, for
+              example:
+
+              TimeSignalPlayerDisplayResolution 1920x1080
+
+
+       RecorderName name
+              Defines the recorder name, for example:
+
+              RecorderName my_recorder
+
+
+       RecorderInput recorder_input
+              Defines the GStreamer source for  the  recorder,  recorder_input
+              parameter can take at least these values:
+
+              auto
+              pulseaudio
+              alsa
+              jack
+              oss
+              oss4
+              openal
+              file
+
+              If  recorder_input  is  jack, the audio input is disconnected by
+              default at the beginning of the  recording.  You  should  manage
+              JACK connections externally.
+
+
+       RecorderDevice recorder_device
+              Defines  the  recorder  device  depending  on the recorder_input
+              value and the system configuration. If recorder_input  is  jack,
+              it defines the JACK server, for example:
+
+              RecorderDevice default
+
+
+       RecorderQuality recorder_quality
+              Defines  the recorded audio quality in the range from -0.1 to 1,
+              for example:
+
+              RecorderQuality 0.5
+
+
+       RecorderSampleRate sample_rate
+              Defines the recorder sample rate in Hz, for example:
+
+              RecorderSampleRate 48000
+
+
+       RecorderChannels channels
+              Defines the number of channels for the recorder, for example:
+
+              RecorderChannels 2
+
+
+       GUIPeriod period
+              Defines the GUI update period in miliseconds, for example:
+
+              GUIPeriod 50
+
+
+AUTHOR
+       ARAS software and documentation written by Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
+       Man page edited by Martin Zelaia <martintxo@sindominio.net>
+
+SEE ALSO
+       aras.schedule(5), aras.block(5), aras.log(5), aras-player(1), aras-dae‐
+       mon(1), aras-recorder(1)
+
+       http://aras.sourceforge.net/
+
+
+
+                                  12 Aug 2016                     ARAS.CONF(5)

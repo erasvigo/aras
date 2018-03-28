@@ -1,0 +1,7 @@
+?package(aras):needs="x11" \
+  section="Applications/Sound" \
+  title="ARAS Recorder" \
+  longtitle="ARAS broadcast automation - Recorder" \
+  command="/usr/bin/aras-recorder.sh" \
+  icon="/usr/share/aras/icons/aras-recorder-icon.png" \
+  startup_notify="true"

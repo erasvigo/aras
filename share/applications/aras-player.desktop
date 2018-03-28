@@ -1,0 +1,11 @@
+
+[Desktop Entry]
+Type=Application
+Version=1.0
+Encoding=UTF-8
+Name=ARAS Player
+Comment=ARAS broadcast automation - Player
+Exec=/usr/bin/aras-player.sh
+Icon=/usr/share/aras/icons/aras-player-icon.png
+Terminal=false
+Categories=AudioVideo;

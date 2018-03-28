@@ -1,0 +1,84 @@
+ARAS.BLOCK(5)                                                    ARAS.BLOCK(5)
+
+
+
+NAME
+       aras.block - Blocks description file for ARAS - A Radio Automation Sys‐
+       tem.
+
+DESCRIPTION
+       aras.block The ARAS block description file contains the blocks descrip‐
+       tions for ARAS.
+
+OPTIONS
+       The  ARAS  block  file contains comments and some block definition ele‐
+       ments, one of them in each line:
+
+
+       Lines with a # character at the beginning are comments.
+
+
+       A block element is defined in a line as follows:
+
+              Name    Type    Data
+
+
+       Where:
+
+
+       Name is the name of the block, as defined in the aras.schedule file.
+
+
+       Type is the block type, it can be: File, Playlist,  Random,  Randomfile
+       or Interleave.
+
+              If  the block type is File, ARAS will play the file whose URI is
+              defined in Data.
+
+              If the block type is Playlist, ARAS will play the  m3u  playlist
+              file defined in Data.
+
+              If  the  block  type is Random, ARAS will play random files from
+              the directory defined in Data.
+
+              If the block type is Randomfile, ARAS will play  a  random  file
+              from the directory defined in Data.
+
+              If  the  block  type  is  Interleave, ARAS will play interleaved
+              files from the blocks defined in Data according to  the  numeric
+              parameters defined in Data.
+
+
+       Data is the block data. It can contain a file URI (both local
+              (file://)  or  from  internet (http://)), a m3u playlist path, a
+              directory path, or the interleaving options,  depending  on  the
+              type of block. Quotation marks should be used if block data con‐
+              tains spaces.
+
+
+       Examples of a block definition are:
+
+              my_block  File  file:///home/radio/archive/my_program.ogg
+
+              my_block  Playlist  /home/radio/archive/my_playlist.m3u
+
+              my_block  Random  /home/radio/archive/
+
+              my_block  Randomfile  /home/radio/archive/
+
+              my_block  Interleave  "block_1 block_2 4 1"
+
+
+AUTHOR
+       ARAS software and documentation written by Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
+       Man page edited by Martin Zelaia <martintxo@sindominio.net>
+
+SEE ALSO
+       aras.conf(5), aras.schedule(5), aras.log(5), aras-player(1),  aras-dae‐
+       mon(1), aras-recorder(1)
+
+       http://aras.sourceforge.net/
+
+
+
+                                  12 Aug 2016                    ARAS.BLOCK(5)

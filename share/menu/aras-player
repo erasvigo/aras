@@ -1,0 +1,8 @@
+?package(aras):needs="x11" \
+  section="Applications/Sound" \
+  title="ARAS Player" \
+  longtitle="ARAS broadcast automation - Player" \
+  command="/usr/bin/aras-player.sh" \
+  icon="/usr/share/aras/icons/aras-player-icon.png" \
+  startup_notify="true"
+

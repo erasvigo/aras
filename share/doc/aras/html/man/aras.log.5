@@ -1,0 +1,61 @@
+ARAS.LOG(5)                                                        ARAS.LOG(5)
+
+
+
+NAME
+       aras.log - Log file for ARAS - A Radio Automation System.
+
+DESCRIPTION
+       aras.log  The ARAS log file is generated automatically and contains the
+       ARAS work log.
+
+OPTIONS
+       A ARAS log entry is defined in a line as follows:
+
+              Date Time Status Data
+
+
+       Where:
+
+
+       Date is the calendar date when the entry has been written, it is repre‐
+       sented in extended format according to ISO 8601 standard.
+
+
+       Time is the time of the day when the entry has been written, it is rep‐
+       resented in extended format according to ISO 8601 standard.
+
+
+       Status is the status at the moment of writing the log entry. Status can
+       take some values:
+
+              Regular block: when ARAS loads a regular block.
+
+              Default block: when ARAS loads the default block.
+
+              Time signal block: when ARAS loads the time signal block.
+
+              URI: when ARAS plays a file in any block.
+
+
+       Data  is  the block name, the default block name, the time signal block
+       name or a file name, according to the Status value.
+
+
+       An example of a log entry is:
+              2016-08-12 12:00:00 URI: http://s1.streamaudio.de:8000/radio-piratona
+
+
+AUTHOR
+       ARAS software and documentation written by Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
+       Man page edited by Martin Zelaia <martintxo@sindominio.net>
+
+SEE ALSO
+       aras.conf(5),    aras.schedule(5),    aras.block(5),    aras-player(1),
+       aras-daemon(1), aras-recorder(1)
+
+       http://aras.sourceforge.net/
+
+
+
+                                  12 Aug 2016                      ARAS.LOG(5)

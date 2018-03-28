@@ -1,0 +1,69 @@
+ARAS-RECORDER(1)                                              ARAS-RECORDER(1)
+
+
+
+NAME
+       aras-recorder - A Radio Automation System.
+
+DESCRIPTION
+       aras-recorder  is  the  ARAS  program that can be useful for record the
+       defined blocks in the ARAS configuration. This program has a GUI inter‐
+       face (in GTK+).
+
+       In  your  system  may have both aras-recorder.sh and aras-recorder. The
+       first should be a shell script for call the  second  in  a  proper  way
+       (passing the proper config file).
+
+OPTIONS
+       There is only a option for call the aras-recorder binary file, its con‐
+       fig file (aras.conf).
+
+
+       aras-recorder <configuration file>
+
+
+FILES
+       aras.conf Main configuration file
+              It may be in any place, since it is invoked in the aras-recorder
+              startup.   Recomended   places   are   /etc/aras/aras.conf,   or
+              ~/.aras/aras.conf. See aras.conf (5)  manual  page  for  further
+              details.  This  file is used for all ARAS programs (aras-player,
+              aras-daemon and aras-recorder).
+
+
+       aras.schedule Schedule description file
+              It may be in any  place,  since  it  is  defined  in  aras.conf.
+              Recomended     places     are     /etc/aras/aras.schedule,    or
+              ~/.aras/aras.schedule. See aras.schedule  (5)  manual  page  for
+              further  details.  This  file  is  used  for  all  ARAS programs
+              (aras-player, aras-daemon and aras-recorder).
+
+
+       aras.block Block description file
+              It may be in any  place,  since  it  is  defined  in  aras.conf.
+              Recomended      places      are     /etc/aras/aras.block,     or
+              ~/.aras/aras.block. See aras.block (5) manual page  for  further
+              details.  This  file is used for all ARAS programs (aras-player,
+              aras-daemon and aras-recorder).
+
+
+       aras.log ARAS work log file
+              It may be in any  place,  since  it  is  defined  in  aras.conf.
+              Recomended     places     are     /var/log/aras/aras.log,     or
+              ~/.aras/aras.log. See  aras.log  (5)  manual  page  for  further
+              details.  This  file is used for all ARAS programs (aras-player,
+              aras-daemon and aras-recorder).
+
+AUTHOR
+       ARAS software and documentation written by Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
+       Man page written by Martin Zelaia <martintxo@sindominio.net>
+
+SEE ALSO
+       aras.conf(5),     aras.schedule(5),     aras.block(5),     aras.log(5),
+       aras-player(1), aras-daemon(1)
+
+       http://aras.sourceforge.net/
+
+
+
+                                  12 Aug 2016                 ARAS-RECORDER(1)

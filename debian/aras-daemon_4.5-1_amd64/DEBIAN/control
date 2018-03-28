@@ -1,0 +1,33 @@
+Package: aras-daemon
+Source: aras
+Version: 4.5-1
+Architecture: amd64
+Maintainer: Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
+Installed-Size: 90
+Depends: libc6 (>= 2.7-1), libglib2.0-0 (>= 2.12.0), libgstreamer1.0-0 (>= 1.0.0), libxml2 (>= 2.6.27), aras-common, gstreamer1.0-plugins-base, gstreamer1.0-plugins-good, gstreamer1.0-plugins-ugly
+Recommends: logrotate
+Section: sound
+Priority: optional
+Homepage: http://aras.sourceforge.net/
+Description: A Radio Automation System - daemon
+ ARAS is a suite of programs for a radio automation system.
+ Some ARAS features are:
+ * It reads a large number of media formats.
+ * It can play files or media streams over internet.
+ * Highly configurable.
+ * Log file capability.
+ * Time signal capability.
+ * Interval signal capability.
+ * It works with single file blocks, playlist blocks, blocks of random files, blocks of one random file and interleaved blocks.
+ * Fade out capability.
+ .
+ There are 4 Debian packages from ARAS: aras-common, aras-daemon, aras-player and aras-recorder.
+ aras-common contains the common files, aras-daemon contains the radio automation system without graphical interface, aras-player contains the radio automation system with graphical interface and aras-recorder contains an audio recorder with graphical interface.
+ .
+ The packages gstreamer1.0-plugins-base, gstreamer1.0-plugins-good and
+ gstreamer1.0-plugins-ugly are required for the .ogg, internet streams and
+ .mp3 support respectively. They pull X dependencies to aras-daemon but
+ we can't avoid them.
+ .
+ See more info about how to configure the suite in the file:
+ /usr/share/doc/aras-daemon/README.Debian

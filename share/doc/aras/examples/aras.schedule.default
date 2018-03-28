@@ -1,0 +1,81 @@
+####################################
+# The ARAS Radio Automation System #
+# Schedule file                    #
+####################################
+
+##########
+# Sunday #
+##########
+
+Sunday      00:00:00    default
+Sunday      04:00:00    default
+Sunday      08:00:00    default
+Sunday      12:00:00    default
+Sunday      16:00:00    default
+Sunday      20:00:00    default
+
+##########
+# Monday #
+##########
+
+Monday      00:00:00    default
+Monday      04:00:00    default
+Monday      08:00:00    default
+Monday      12:00:00    default
+Monday      16:00:00    default
+Monday      20:00:00    default
+
+###########
+# Tuesday #
+###########
+
+Tuesday     00:00:00    default
+Tuesday     04:00:00    default
+Tuesday     08:00:00    default
+Tuesday     12:00:00    default
+Tuesday     16:00:00    default
+Tuesday     20:00:00    default
+
+#############
+# Wednesday #
+#############
+
+Wednesday   00:00:00    default
+Wednesday   04:00:00    default
+Wednesday   08:00:00    default
+Wednesday   12:00:00    default
+Wednesday   16:00:00    default
+Wednesday   20:00:00    default
+
+############
+# Thursday #
+############
+
+Thursday    00:00:00    default
+Thursday    04:00:00    default
+Thursday    08:00:00    default
+Thursday    12:00:00    default
+Thursday    16:00:00    default
+Thursday    20:00:00    default
+
+##########
+# Friday #
+##########
+
+Friday      00:00:00    default
+Friday      04:00:00    default
+Friday      08:00:00    default
+Friday      12:00:00    default
+Friday      16:00:00    default
+Friday      20:00:00    default
+
+############
+# Saturday #
+############
+
+Saturday    00:00:00    default
+Saturday    04:00:00    default
+Saturday    08:00:00    default
+Saturday    12:00:00    default
+Saturday    16:00:00    default
+Saturday    20:00:00    default

@@ -1,0 +1,11 @@
+
+[Desktop Entry]
+Type=Application
+Version=1.0
+Encoding=UTF-8
+Name=ARAS Recorder
+Comment=ARAS broadcast automation - Recorder
+Exec=/usr/bin/aras-recorder.sh
+Icon=/usr/share/aras/icons/aras-recorder-icon.png
+Terminal=false
+Categories=AudioVideo;

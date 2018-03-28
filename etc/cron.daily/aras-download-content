@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# This script downloads media files from an XML podcast to be read from ARAS.
+# This script must be called by cron periodically.
+
+LOGFILE=/var/log/aras/events.log
+
+# Update playlist
+
+#DIR="/tmp"
+#FEED="http://ccmixter.org/api/query?sinced=4%20weeks%20ago&sort=num_scores&f=rss&limit=default"
+#FILTER_1="head -n 2"
+#FILTER_2="cat"
+#cd $DIR && wget -q -O - "$FEED" | grep -o '<enclosure url="[^"]*' | grep -o '[^"]*$' | $FILTER_1 | $FILTER_2 | xargs wget -c
+
+# Update another playlist
+
+#DIR="/tmp"
+#FEED="http://ccmixter.org/api/query?tags=hip_hop&sort=date&f=rss&limit=default"
+#FILTER_1="head -n 2"
+#FILTER_2="cat"
+#cd $DIR && wget -q -O - "$FEED" | grep -o '<enclosure url="[^"]*' | grep -o '[^"]*$' | $FILTER_1 | $FILTER_2 | xargs wget -c
+
+# Write event to log
+
+DATE=$(date "+%Y-%m-%d %H:%M:%S")
+echo "$DATE aras-download-content Completed task" >> $LOGFILE

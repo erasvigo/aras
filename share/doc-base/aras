@@ -1,0 +1,20 @@
+Document: aras
+Title: ARAS - A Radio Automation System
+Author: Martintxo
+Abstract: ARAS is a suite of programs for a radio automation system. Some ARAS features are:
+ * It reads mp3, wav, ogg, mod, xm and other media formats.
+ * It can play files or media streams over internet.
+ * Highly configurable.
+ * Log file capability.
+ * Time signal capability.
+ * Interval signal capability.
+ * It works with single file blocks, playlist blocks, blocks of random files, block of one random file and interleaved blocks.
+ * Fade out capability.
+Section: Sound
+
+Format: HTML
+Index: /usr/share/doc/aras/html/index.html
+Files: /usr/share/doc/aras/html/*.html
+
+Format: text
+Files: /usr/share/doc/aras/html/man/*

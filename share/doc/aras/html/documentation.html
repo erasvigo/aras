@@ -1,0 +1,242 @@
+<html>
+
+        <head>
+                <title>
+                        The ARAS Radio Automation System
+                </title>
+
+                <style id="text/css">
+
+                        div.top_block {
+                                left:0px;
+                                top:0px;
+                                background-image:url('images/background-top.png');
+                                background-repeat:repeat-x;
+                                position:absolute;
+                                width:100%;
+                                height:60px;
+                                padding:0px;
+                                font-size:24px;
+                                font-family:sans,verdana;
+                                font-weight:bold;
+                                text-align:center;
+                                vertical-align:middle;
+                        }
+
+                        div.top_text {
+                                left:0px;
+                                top:15px;
+                                position:absolute;
+                                width:100%;
+                                height:60px;
+                                padding:0px;
+                                color: #fafaff;
+                                font-size:24px;
+                                font-family:sans,verdana;
+                                font-weight:bold;
+                                text-align:center;
+                        }
+
+                        div.left_block {
+                                left:0px;
+                                top:60px;
+                                position:absolute;
+                                width:110px;
+                                height:200px;
+                                padding:10px;
+                                font-size:12px;
+                                font-family:sans,verdana;
+                                font-weight:bold;
+                                background-image:url('images/background-top.png');
+                                background-repeat:repeat-xy;
+                        }
+
+                        .left_block a:link,
+                        .left_block a:visited,
+                        .left_block a:hover {
+                                color: #fafaff;
+                        }
+
+                        div.main_block {
+                                left:150px;
+                                top:80px;
+                                width:650px;
+                                background-color: white;
+                                position:absolute;
+                                padding:10px;
+                                font-size:14px;
+                                font-family:sans,verdana;
+                        }
+
+                        div.main_block code {
+                                font-size:12px;
+                        }
+
+                        a:link {
+                                color:#0000a0;
+                                text-decoration: none;
+                        }
+
+                        a:visited {
+                                color:#404080;
+                                text-decoration: none;
+                        }
+
+                        a:active {
+                                text-decoration:underline;
+                                color:#a00000;
+                        }
+
+                        a:hover {
+                                text-decoration:underline;
+                        }
+
+                </style>
+
+        </head>
+
+        <body>
+
+                <div class="top_block">
+
+                </div>
+
+                <div class="top_text">
+                        The ARAS Radio Automation System
+                </div>
+
+                <div class="left_block">
+                        <p><a href="index.html">Home</a></p>
+                        <p><a href="features.html">Features</a></p>
+                        <p><a href="screenshots.html">Screenshots</a></p>
+                        <p><a href="download.html">Download</a><p>
+                        <p><a href="documentation.html">Documentation</a></p>
+                        <p><a href="contact.html">Contact</a></p>
+                </div>
+
+                <div class="main_block">
+
+                        <p>
+                                <b>Documentation</b>
+                        </p>
+
+                        <p>The full documentation for the binaries is in the following manual pages:</p>
+
+                        <ul>
+                                <li>Manual page for <b>aras-daemon</b> <a href="man/aras-daemon.1">[Plain text]</a></li>
+                                <li>Manual page for <b>aras-player</b> <a href="man/aras-player.1">[Plain text]</a></li>
+                                <li>Manual page for <b>aras-recorder</b> <a href="man/aras-recorder.1">[Plain text]</a></li>
+                        </ul>
+
+                        <p>
+                                The full documentation for the configuration files is in the following manual pages:
+                        </p>
+
+                        <ul>
+                                <li>Manual page for <b>aras.conf</b> <a href="man/aras.conf.5">[Plain text]</a></li>
+                                <li>Manual page for <b>aras.schedule</b> <a href="man/aras.schedule.5">[Plain text]</a></li>
+                                <li>Manual page for <b>aras.block</b> <a href="man/aras.block.5">[Plain text]</a></li>
+                        </ul>
+
+                        <p>
+                                The full documentation for the log file is in the following manual pages:
+                        </p>
+
+                        <ul>
+                                <li>Manual page for <b>aras.log</b> <a href="man/aras.log.5">[Plain text]</a></li>
+                        </ul>
+
+                        <p>
+                                The <a href="http://aras.sourceforge.net/archive"><b>archived documentation</b></a> is also available from the former ARAS Wiki.
+                        </p>
+
+                        <p>
+                                <p>
+                                        <b>Audio processing / FM radio</b>
+                                </p>
+
+                                <p>
+                                        If you want to process your audio stream before broadcasting using JACK Audio Connection Kit, run a stack of audio effects like <a href="http://calf.sourceforge.net/">Calf Rack</a>, <a href="http://jack-rack.sourceforge.net/">JACK Rack</a>, <a href="http://home.gna.org/zynjacku/">LV2 Rack</a> or similar, with your set of <a href="http://www.ladspa.org/">LADSPA</a> or <a href="http://lv2plug.in/">LV2</a> plugins.
+                                </p>
+
+                                <p>
+                                        You have two options to automate the management of the JACK patchbay:<br>
+                                </p>
+
+                                <ol>
+                                        <li>Run <a href="http://qjackctl.sourceforge.net/">QjackCtl</a> with a proper <a href="http://aras.sourceforge.net/files/patchbay.xml">patchbay</a> profile.</li>
+                                        <li>
+                                                Run <a href="http://rd.slavepianos.org/?t=rju">jack.plumbing</a> with a proper <a href=http://aras.sourceforge.net/files/rule-file>rule file</a>. In this case, be careful with the elapsed time to ensure patchbay is updated correctly.
+
+                                                <p>
+                                                        <code>
+                                                                $ jack.plumbing -q -u 100000 <a href=files/rule-file>rule-file</a>
+                                                        </code>
+                                                </p>
+
+                                        </li>
+                                </ol>
+
+                                <p>
+                                        An example:
+                                </p>
+
+                                <p>
+                                        <code>
+                                                $ /usr/bin/jackd -dalsa -dhw:0 -r48000 -p1024 -n2 1> /dev/null 2> /dev/null &<br>
+                                                $ aras-daemon /etc/aras/<a href="files/aras.conf">aras.conf</a> > /dev/null &<br>
+                                                $ calfjackhost --load <a href="files/session">session</a> > /dev/null &<br>
+                                                $ jack.plumbing -q -u 100000 <a href="files/rule-file">rule-file</a> 2> /dev/null<br>
+                                        </code>
+                                </p>
+                        </p>
+
+                        <p>
+                                <p>
+                                        <b>Streaming / Internet Radio</b>
+                                </p>
+
+                                <p>
+                                        If you want to feed a streaming server with ARAS using JACK Audio Connection Kit, do the following:
+                                </p>
+
+                                <p>
+                                        <code>
+                                                $ icecast2 -c <a href="files/icecast.xml">icecast.xml</a> & <br>
+                                                $ aras-player /etc/aras/<a href="files/aras.conf">aras.conf</a> & <br>
+                                                $ avconv -f jack -i avconv -y -f s16le - 2>/dev/null | ices2 <a href="files/ices-stdinpcm.xml">ices-stdinpcm.xml</a>
+                                        </code>
+                                </p>
+
+                                <p>
+                                        Customize your configuration files and configure your JACK patchbay to feed avconv properly.
+                                </p>
+                        </p>
+
+                        <p>
+                                <p>
+                                        <b>TV broadcast</b>
+                                </p>
+
+                                <p>
+                                        Since ARAS is based on <a href="http://gstreamer.freedesktop.org">GStreamer</a>, it can play a variety of multimedia formats, including video files. So if you want to automate a TV station with ARAS, set up your configuration files and do the following:
+                                </p>
+
+                                <p>
+                                        <code>
+                                                $ DISPLAY=:1.0 aras-daemon /etc/aras/aras_1.conf & <br>
+                                                $ DISPLAY=:2.0 aras-daemon /etc/aras/aras_2.conf <br>
+                                        </code>
+                                </p>
+
+                                <p>
+                                        Two ARAS processes working on different displays allows you to generate video and on-screen graphics for further mixing.
+                                </p>
+
+                        </p>
+
+                </div>
+
+        </body>
+
+</html>

@@ -1,0 +1,229 @@
+The ARAS Radio Automation System
+Copyright (C) 2018  Erasmo Alonso Iglesias
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+2018-02-24  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-4.5 released
+	- Updated struct aras_player to provide two players
+	- Updated video sink initialization for OpenGL plugin
+	- Updated engine to provide crossfade capability
+	- Updated GUI progress bar management while buffering
+	- Updated GUI buttons management
+	- Updated Makefile
+	- Updated file share/doc/aras/examples/update-metadata.sh
+
+2017-03-28  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-4.4 released
+	- Bug fixed in functions using time limitation for the engine state that
+	  prevented engine to change its current state if the defined time
+	  limitation is never reached, for exemple during a DST time change
+	- Addition of a bash script to manage media metadata
+
+2016-09-04  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-4.3 released
+	- Bug fixed in function aras_playlist_load_interleave
+	- Defined read and write permissions for all users in log file
+	- Allow files marked as executable to be added to playlists
+	- Modification of URI allowed characters in function aras_playlist_load_file
+
+2016-08-28  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-4.2 released
+	- Bug fixed in engine playback monitor
+
+2016-08-24  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-4.1 released
+	- Bug fixed in GUI callback functions
+	- Bug fixed in recorder combo box
+	- Bug fixed in player
+
+2016-08-08  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-4.0 released
+	- Code rewritten
+	- Improved shuffle algorithm
+	- Improved interleave block support
+	- New scheduling engine
+	- Improved GUI
+
+2016-05-03  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-3.0 released
+	- Bug fixed in function get_interleave_block
+	- Improved shuffle algorithm
+	- Code update using GStreamer version 1.0
+	- Code update using GTK version 3
+	- Control buttons in ARAS Player
+	- Improvement of Record/Stop operation in ARAS Recorder
+	- Code cleanup
+
+2014-12-22  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-2.10 released
+	- Fixing the coding style
+	- Added filesink output for streaming through pipes
+	- Updated documentation
+
+2011-10-05  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-2.9 released
+	- Added recursive directory scanning in Random blocks
+	- Fixed bug in get_interleave_block function that prevented
+	  elements from the secondary playlist to be added to the
+	  returned playlist when the primary playlist contains only one
+	  element.
+	- Reduction of memory usage in get_interleave_block function
+
+2011-09-06  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-2.8 released
+	- Modification of internal structures for schedule and block
+	  description
+	- Modification of fade_out and countdown functions
+	- Modification in functions that use dynamic memory allocation
+	- Fixed bug that makes value from IntervalSignal directive case
+	  sensitive
+	- Fixed bug that causes segmentation fault if a Randomfile block
+	  is loaded and the internal playlist is empty
+	- Added buffering management
+	- Added progress bar in GUI
+
+2011-06-26  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-2.7 released
+	- Stereo input in ARAS Recorder
+	- Explicit labels in JACK plugs
+	- Documentation update
+	- Stereo time signal
+
+2011-01-24  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-2.6 released
+	- Automatic, OSS, OSS4, ALSA, Pulseaudio and JACK support added
+	- Improvement of configuration management
+	- Improvement in stability
+	- Some code rewritten
+	- Documentation updated
+
+2011-01-14  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-2.4 released
+	- Players have been upgraded
+	- Bug fixed and improvement of function which manages interleaved
+	  blocks in ARAS Daemon and ARAS Player
+	- Bug fixed in function which manages the name of the recorded file 
+	  in ARAS Recorder
+
+2010-03-28  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-2.3 released
+	- Bug fixed in GUI
+	- Management of Randomfile blocks and Interleave blocks
+	- ScheduleSupport option added
+	- RecorderDevice and RecorderQuality options added
+
+2009-04-20  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-2.2 released
+	- Bug fixed in GUI
+
+2009-04-10  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-2.1 released
+	- Bug fixed in fade_out function of ARAS Player
+	- Bug fixed in the main function of each thread
+	- Bug fixed in the file name of the files while they are being 
+	  recorded
+	- RecorderStorage option added
+	- Improvement in the ARAS Player GUI
+	- Improvement in the ARAS Recorder file management
+
+2009-04-04  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-2.0 released
+	- Bug fixed in block_bus_call function
+	- Bug fixed in shuffle_playlist function
+
+2009-04-02  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-1.9 released
+	- The function block_player_support has been rewritten
+	- The function schedule_support has been modified
+	- Some bugs fixed
+
+2009-03-30  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-1.8 released
+	- ARAS is divided in ARAS Daemon, ARAS Player and ARAS Recorder
+	- Improvement in stability
+	- Improvement in GUI
+
+2009-02-21  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-1.7 released
+	- Bug fixed in fade_out function
+
+2009-01-11  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-1.6 released
+	- URI and local path support in playlists
+
+2008-12-16  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-1.5 released
+	- ARAS is stable with undefined blocks
+
+2008-10-01  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-1.4 released
+	- Improvement in GUI
+	- Local time clock
+	- Countdown until next block
+	- Recorder stopwatch
+	- System tray icon
+	- Whitespaces management in block data and playlists
+	- ARAS logo
+
+2008-09-10  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-1.3 released
+	- Graphical user interface
+	- Integrated OGG recorder
+	- Bug fixed in free_configuration function
+	- Log file mutex has been added
+	- Some code comments have been added
+
+2008-08-24  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-1.2 released
+	- Playlist support
+	- Log file support
+	- Time shift correction in block loading
+	- Bug fixed in random file block support
+	- Multithread architecture
+	- Improvement in stability
+
+2008-02-26  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+
+	* ARAS-1.0 released
+	- Fixed application crash when any file is unavailable
+	- Fade out support before the end of the current block
+	- Random file block support
+

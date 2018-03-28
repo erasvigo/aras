@@ -1,0 +1,57 @@
+ARAS.SCHEDULE(5)                                              ARAS.SCHEDULE(5)
+
+
+
+NAME
+       aras.schedule - Schedule description file for ARAS - A Radio Automation
+       System.
+
+DESCRIPTION
+       aras.schedule The ARAS schedule file contains the schedule  description
+       for ARAS.
+
+OPTIONS
+       The  ARAS  schedule  file contains comments and some schedule elements,
+       one of them in each line:
+
+
+       Lines with a # character at the beginning are comments.
+
+
+       A schedule element is defined in a line as follows:
+
+              Day    Time    Block
+
+
+       Where:
+
+
+       Day can be: Sunday, Monday, Tuesday,  Wednesday,  Thursday,  Friday  or
+       Saturday.
+
+
+       Time is the time of the beginning of the schedule element in the format
+       HH:MM:SS.
+
+
+       Block is the block associated with the  schedule  element.  Blocks  are
+       defined in the aras.block file (see aras.block (5) manual page).
+
+
+       An example of a schedule element definition is:
+
+              Monday    22:00:00    my_block
+
+AUTHOR
+       ARAS software and documentation written by Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
+       Man page edited by Martin Zelaia <martintxo@sindominio.net>
+
+SEE ALSO
+       aras.conf(5),  aras.block(5),  aras.log(5),  aras-player(1),  aras-dae‐
+       mon(1), aras-recorder(1)
+
+       http://aras.sourceforge.net/
+
+
+
+                                  12 Aug 2016                 ARAS.SCHEDULE(5)
