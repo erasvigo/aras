@@ -535,8 +535,6 @@ void aras_engine_monitor_schedule_hard(struct aras_engine *engine, struct aras_p
  */
 void aras_engine_schedule(struct aras_engine *engine, struct aras_player *player, struct aras_configuration *configuration, struct aras_schedule *schedule, struct aras_block *block)
 {
-        GstState state_a, state_pa;
-        GstState state_b, state_pb;
         char msg[ARAS_LOG_MESSAGE_MAX];
 
         switch (engine->state) {
