@@ -30,6 +30,7 @@
 #include <gst/gst.h>
 #include <aras/configuration.h>
 #include <aras/player.h>
+#include <aras/log.h>
 
 /**
  * This function is the callback function for a player.
@@ -88,7 +89,7 @@ gboolean aras_player_callback_block_player_b(GstBus *bus, GstMessage *msg, gpoin
                 gst_message_parse_buffering(msg, &player->buffer_percent_b);
                 if (player->buffer_percent_b < 100)
                         gst_element_set_state(player->playbin_b, GST_STATE_PAUSED);
-                else
+                else 
                         gst_element_set_state(player->playbin_b, GST_STATE_PLAYING);
                 break;
         default:
@@ -227,39 +228,30 @@ GstElement *aras_player_init_video_sink(char *name, int video_output, char *vide
  * @param   resolution      Array containing the screen resolution
  * @return  The video bin
  */
-GstElement *aras_player_init_video_sink_bin(char *name, int video_output, char *video_device, char *video_display, int resolution[])
+void aras_player_init_video_sink_bin(struct aras_player_sink *sink, char *name, int video_output, char *video_device, char *video_display, int resolution[])
 {
-        GstElement *bin;
-        GstElement *video_convert;
-        GstElement *video_sink;
-        GstCaps *caps;
-        GstPad *pad;
-        GstPad *ghost_pad;
-
         /* Create bin */
-        bin = gst_bin_new("video_sink_bin");
+        sink->bin = gst_bin_new("video_sink_bin");
 
         /* Create the elements to be added to the bin */
-        video_convert = gst_element_factory_make("videoconvert", "videoconvert");
-        video_sink = aras_player_init_video_sink(name, video_output, video_device, video_display, resolution);
+        sink->convert = gst_element_factory_make("videoconvert", "videoconvert");
+        sink->sink = aras_player_init_video_sink(name, video_output, video_device, video_display, resolution);
 
         /* Add the elements to the bin */
-        gst_bin_add_many(GST_BIN(bin), video_convert, video_sink, NULL);
+        gst_bin_add_many(GST_BIN(sink->bin), sink->convert, sink->sink, NULL);
 
         /* Create the capabilities and link elements */
-        caps = gst_caps_new_simple("video/x-raw", "width", G_TYPE_INT, resolution[0], "height", G_TYPE_INT, resolution[1], NULL);
+        sink->caps = gst_caps_new_simple("video/x-raw", "width", G_TYPE_INT, resolution[0], "height", G_TYPE_INT, resolution[1], NULL);
 
-        gst_element_link_filtered(video_convert, video_sink, caps);
-        gst_caps_unref(caps);
+        gst_element_link_filtered(sink->convert, sink->sink, sink->caps);
+        //gst_caps_unref(sink->caps);
 
         /* Create the pad in the bin */
-        pad = gst_element_get_static_pad(video_convert, "sink");
-        ghost_pad = gst_ghost_pad_new("sink", pad);
-        gst_pad_set_active(ghost_pad, TRUE);
-        gst_element_add_pad(bin, ghost_pad);
-        gst_object_unref(pad);
-
-        return bin;
+        sink->pad = gst_element_get_static_pad(sink->convert, "sink");
+        sink->ghost_pad = gst_ghost_pad_new("sink", sink->pad);
+        gst_pad_set_active(sink->ghost_pad, TRUE);
+        gst_element_add_pad(sink->bin, sink->ghost_pad);
+        //gst_object_unref(sink->pad);
 }
 
 /**
@@ -320,34 +312,27 @@ GstElement *aras_player_init_audio_sink(char *name, int audio_output, char *audi
  * This function returns an audio sink bin to be used as an audio sink with a
  * playbin element.
  *
+ * @param   sink            Pointer to an aras_player_sink structure
  * @param   name            Pointer to the name string
  * @param   audio_output    Value for the audio output
  * @param   audio_device    Pointer to the audio device string
  * @param   sample_rate     Value for the sample rate
  * @param   channels        Value for the number of channels
- * @return  The audio bin
  */
-GstElement *aras_player_init_audio_sink_bin(char *name, int audio_output, char *audio_device, int sample_rate, int channels)
+void aras_player_init_audio_sink_bin(struct aras_player_sink *sink, char *name, int audio_output, char *audio_device, int sample_rate, int channels)
 {
-        GstElement *bin;
-        GstElement *audio_convert;
-        GstElement *audio_sink;
-        GstCaps *audio_caps;
-        GstPad *pad;
-        GstPad *ghost_pad;
-
         /* Create bin */
-        bin = gst_bin_new("audio_sink_bin");
+        sink->bin = gst_bin_new("audio_sink_bin");
 
         /* Create the elements */
-        audio_convert = gst_element_factory_make("audioconvert", "audioconvert");
-        audio_sink = aras_player_init_audio_sink(name, audio_output, audio_device);
+        sink->convert = gst_element_factory_make("audioconvert", "audioconvert");
+        sink->sink = aras_player_init_audio_sink(name, audio_output, audio_device);
 
         /* Add the elements to the bin */
-        gst_bin_add_many(GST_BIN(bin), audio_convert, audio_sink, NULL);
+        gst_bin_add_many(GST_BIN(sink->bin), sink->convert, sink->sink, NULL);
 
         /* Create the capabilities and link elements */
-        audio_caps = gst_caps_new_simple("audio/x-raw",
+        sink->caps = gst_caps_new_simple("audio/x-raw",
                                                  "channels",
                                                  G_TYPE_INT,
                                                  channels,
@@ -355,17 +340,15 @@ GstElement *aras_player_init_audio_sink_bin(char *name, int audio_output, char *
                                                  G_TYPE_INT,
                                                  sample_rate,
                                                  NULL);
-        gst_element_link_filtered(audio_convert, audio_sink, audio_caps);
-        gst_caps_unref(audio_caps);
+        gst_element_link_filtered(sink->convert, sink->sink, sink->caps);
+        //gst_caps_unref(sink->caps);
 
         /* Create the pad in the bin */
-        pad = gst_element_get_static_pad(audio_convert, "sink");
-        ghost_pad = gst_ghost_pad_new("sink", pad);
-        gst_pad_set_active(ghost_pad, TRUE);
-        gst_element_add_pad(bin, ghost_pad);
-        gst_object_unref(pad);
-
-        return bin;
+        sink->pad = gst_element_get_static_pad(sink->convert, "sink");
+        sink->ghost_pad = gst_ghost_pad_new("sink", sink->pad);
+        gst_pad_set_active(sink->ghost_pad, TRUE);
+        gst_element_add_pad(sink->bin, sink->ghost_pad);
+        //gst_object_unref(sink->pad);
 }
 
 /**
@@ -391,39 +374,43 @@ int aras_player_init_block_player(struct aras_player *player, struct aras_config
         player->playbin_b = gst_element_factory_make("playbin", "deck_b");
 
         /* Create the audio sink bin and the video sink bin */
-        player->audio_sink_bin_a = aras_player_init_audio_sink_bin(configuration->block_player_name,
+        aras_player_init_audio_sink_bin(&player->audio_sink_a,
+                                        configuration->block_player_name,
                                         configuration->block_player_audio_output,
                                         configuration->block_player_audio_device,
                                         configuration->block_player_sample_rate,
                                         configuration->block_player_channels);
-        player->audio_sink_bin_b = aras_player_init_audio_sink_bin(configuration->block_player_name,
-                                        configuration->block_player_audio_output,
-                                        configuration->block_player_audio_device,
-                                        configuration->block_player_sample_rate,
-                                        configuration->block_player_channels);
-        player->video_sink_bin_a = aras_player_init_video_sink_bin(configuration->block_player_name,
+        aras_player_init_video_sink_bin(&player->video_sink_a,
+                                        configuration->block_player_name,
                                         configuration->block_player_video_output,
                                         configuration->block_player_video_device,
                                         configuration->block_player_video_display,
                                         configuration->block_player_display_resolution);
-        player->video_sink_bin_b = aras_player_init_video_sink_bin(configuration->block_player_name,
+        aras_player_init_audio_sink_bin(&player->audio_sink_b,
+                                        configuration->block_player_name,
+                                        configuration->block_player_audio_output,
+                                        configuration->block_player_audio_device,
+                                        configuration->block_player_sample_rate,
+                                        configuration->block_player_channels);
+        aras_player_init_video_sink_bin(&player->video_sink_b,
+                                        configuration->block_player_name,
                                         configuration->block_player_video_output,
                                         configuration->block_player_video_device,
                                         configuration->block_player_video_display,
                                         configuration->block_player_display_resolution);
 
-        g_object_set(player->playbin_a, "audio-sink", player->audio_sink_bin_a, NULL);
-        g_object_set(player->playbin_a, "video-sink", player->video_sink_bin_a, NULL);
-        g_object_set(player->playbin_b, "audio-sink", player->audio_sink_bin_b, NULL);
-        g_object_set(player->playbin_b, "video-sink", player->video_sink_bin_b, NULL);
+        g_object_set(player->playbin_a, "audio-sink", player->audio_sink_a.bin, NULL);
+        g_object_set(player->playbin_a, "video-sink", player->video_sink_a.bin, NULL);
+        g_object_set(player->playbin_b, "audio-sink", player->audio_sink_b.bin, NULL);
+        g_object_set(player->playbin_b, "video-sink", player->video_sink_b.bin, NULL);
 
         /* Create the buses */
         player->bus_a = gst_pipeline_get_bus(GST_PIPELINE(player->playbin_a));
         player->bus_b = gst_pipeline_get_bus(GST_PIPELINE(player->playbin_b));
         gst_bus_add_watch(player->bus_a, aras_player_callback_block_player_a, player);
         gst_bus_add_watch(player->bus_b, aras_player_callback_block_player_b, player);
-        gst_object_unref(player->bus_a);
-        gst_object_unref(player->bus_b);
+        //gst_object_unref(player->bus_a);
+        //gst_object_unref(player->bus_b);
 
         /* Set the volume */
         g_object_set(player->playbin_a, "volume", player->volume_a, NULL);
@@ -458,40 +445,40 @@ int aras_player_init_time_signal_player(struct aras_player *player, struct aras_
         player->playbin_b = gst_element_factory_make("playbin", "deck_b");
 
         /* Create the audio sink bin and the video sink bin */
-        player->audio_sink_bin_a = aras_player_init_audio_sink_bin(configuration->time_signal_player_name,
+        aras_player_init_audio_sink_bin(&player->audio_sink_a, configuration->time_signal_player_name,
                                         configuration->time_signal_player_audio_output,
                                         configuration->time_signal_player_audio_device,
                                         configuration->time_signal_player_sample_rate,
                                         configuration->time_signal_player_channels);
-        player->video_sink_bin_a = aras_player_init_video_sink_bin(configuration->time_signal_player_name,
+        aras_player_init_video_sink_bin(&player->video_sink_a, configuration->time_signal_player_name,
                                         configuration->time_signal_player_video_output,
                                         configuration->time_signal_player_video_device,
                                         configuration->time_signal_player_video_display,
                                         configuration->time_signal_player_display_resolution);
-        player->audio_sink_bin_b = aras_player_init_audio_sink_bin(configuration->time_signal_player_name,
+        aras_player_init_audio_sink_bin(&player->audio_sink_b, configuration->time_signal_player_name,
                                         configuration->time_signal_player_audio_output,
                                         configuration->time_signal_player_audio_device,
                                         configuration->time_signal_player_sample_rate,
                                         configuration->time_signal_player_channels);
-        player->video_sink_bin_b = aras_player_init_video_sink_bin(configuration->time_signal_player_name,
+        aras_player_init_video_sink_bin(&player->video_sink_b, configuration->time_signal_player_name,
                                         configuration->time_signal_player_video_output,
                                         configuration->time_signal_player_video_device,
                                         configuration->time_signal_player_video_display,
                                         configuration->time_signal_player_display_resolution);
 
         /* Bind the audio sink bin and the video sink bin to the playbin */
-        g_object_set(player->playbin_a, "audio-sink", player->audio_sink_bin_a, NULL);
-        g_object_set(player->playbin_a, "video-sink", player->video_sink_bin_a, NULL);
-        g_object_set(player->playbin_b, "audio-sink", player->audio_sink_bin_b, NULL);
-        g_object_set(player->playbin_b, "video-sink", player->video_sink_bin_b, NULL);
+        g_object_set(player->playbin_a, "audio-sink", player->audio_sink_a.bin, NULL);
+        g_object_set(player->playbin_a, "video-sink", player->video_sink_a.bin, NULL);
+        g_object_set(player->playbin_b, "audio-sink", player->audio_sink_b.bin, NULL);
+        g_object_set(player->playbin_b, "video-sink", player->video_sink_b.bin, NULL);
 
         /* Create the buses */
         player->bus_a = gst_pipeline_get_bus(GST_PIPELINE(player->playbin_a));
         player->bus_b = gst_pipeline_get_bus(GST_PIPELINE(player->playbin_b));
         gst_bus_add_watch(player->bus_a, aras_player_callback_time_signal_player_a, player);
         gst_bus_add_watch(player->bus_b, aras_player_callback_time_signal_player_b, player);
-        gst_object_unref(player->bus_a);
-        gst_object_unref(player->bus_b);
+        //gst_object_unref(player->bus_a);
+        //gst_object_unref(player->bus_b);
 
         /* Set the volume */
         g_object_set(player->playbin_a, "volume", player->volume_a, NULL);
@@ -600,12 +587,45 @@ void aras_player_set_state_null(struct aras_player *player, int unit)
  */
 void aras_player_set_state_ready(struct aras_player *player, int unit)
 {
+        GstState state;
+        GstState pending;
+
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
+                do {
+                        gst_element_get_state(player->playbin_a, &state, &pending, GST_CLOCK_TIME_NONE);
+                } while (pending != GST_STATE_VOID_PENDING);
                 gst_element_set_state(player->playbin_a, GST_STATE_READY);
+                switch (gst_element_get_state(player->playbin_a, &state, &pending, GST_CLOCK_TIME_NONE)) {
+                case GST_STATE_CHANGE_SUCCESS:
+                        break;
+                case GST_STATE_CHANGE_ASYNC:
+                        break;
+                case GST_STATE_CHANGE_FAILURE:
+                        gst_element_set_state(player->playbin_a, GST_STATE_NULL);
+                        break;
+                default:
+                        gst_element_set_state(player->playbin_a, GST_STATE_NULL);
+                        break;
+                }
                 break;
         case ARAS_PLAYER_UNIT_B:
+                do {
+                        gst_element_get_state(player->playbin_b, &state, &pending, GST_CLOCK_TIME_NONE);
+                } while (pending != GST_STATE_VOID_PENDING);
                 gst_element_set_state(player->playbin_b, GST_STATE_READY);
+                switch (gst_element_get_state(player->playbin_b, &state, &pending, GST_CLOCK_TIME_NONE)) {
+                case GST_STATE_CHANGE_SUCCESS:
+                        break;
+                case GST_STATE_CHANGE_ASYNC:
+                        break;
+                case GST_STATE_CHANGE_FAILURE:
+                        gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+                        break;
+                default:
+                        gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+                        break;
+                }
                 break;
         default:
                 break;
@@ -640,12 +660,45 @@ void aras_player_set_state_paused(struct aras_player *player, int unit)
  */
 void aras_player_set_state_playing(struct aras_player *player, int unit)
 {
+        GstState state;
+        GstState pending;
+
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
+                do {
+                        gst_element_get_state(player->playbin_a, &state, &pending, GST_CLOCK_TIME_NONE);
+                } while (pending != GST_STATE_VOID_PENDING);
                 gst_element_set_state(player->playbin_a, GST_STATE_PLAYING);
+                switch (gst_element_get_state(player->playbin_a, &state, &pending, GST_CLOCK_TIME_NONE)) {
+                case GST_STATE_CHANGE_SUCCESS:
+                        break;
+                case GST_STATE_CHANGE_ASYNC:
+                        break;
+                case GST_STATE_CHANGE_FAILURE:
+                        gst_element_set_state(player->playbin_a, GST_STATE_NULL);
+                        break;
+                default:
+                        gst_element_set_state(player->playbin_a, GST_STATE_NULL);
+                        break;
+                }
                 break;
         case ARAS_PLAYER_UNIT_B:
+                do {
+                        gst_element_get_state(player->playbin_b, &state, &pending, GST_CLOCK_TIME_NONE);
+                } while (pending != GST_STATE_VOID_PENDING);
                 gst_element_set_state(player->playbin_b, GST_STATE_PLAYING);
+                switch (gst_element_get_state(player->playbin_b, &state, &pending, GST_CLOCK_TIME_NONE)) {
+                case GST_STATE_CHANGE_SUCCESS:
+                        break;
+                case GST_STATE_CHANGE_ASYNC:
+                        break;
+                case GST_STATE_CHANGE_FAILURE:
+                        gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+                        break;
+                default:
+                        gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+                        break;
+                }
                 break;
         default:
                 break;

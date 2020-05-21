@@ -42,29 +42,31 @@
 #define ARAS_PLAYER_UNIT_A      0
 #define ARAS_PLAYER_UNIT_B      1
 
+struct aras_player_sink {
+        GstElement *bin;
+        GstElement *convert;
+        GstElement *sink;
+        GstCaps *caps;
+        GstPad *pad;
+        GstPad *ghost_pad;
+};
+
 struct aras_player {
         int current_unit;
         char uri_a[ARAS_PLAYER_MAX_URI];
         char uri_b[ARAS_PLAYER_MAX_URI];
         float volume_a;
         float volume_b;
-        char name[ARAS_PLAYER_MAX_NAME];
-        int audio_output;
-        char audio_device[ARAS_PLAYER_MAX_DEVICE];
-        int video_output;
-        char video_device[ARAS_PLAYER_MAX_DEVICE];
-        int sample_rate;
-        int channels;
         GstElement *playbin_a;
         GstElement *playbin_b;
         GstBus *bus_a;
         GstBus *bus_b;
         int buffer_percent_a;
         int buffer_percent_b;
-        GstElement *audio_sink_bin_a;
-        GstElement *audio_sink_bin_b;
-        GstElement *video_sink_bin_a;
-        GstElement *video_sink_bin_b;
+        struct aras_player_sink audio_sink_a;
+        struct aras_player_sink video_sink_a;
+        struct aras_player_sink audio_sink_b;
+        struct aras_player_sink video_sink_b;
 };
 
 int aras_player_init(struct aras_player *player,
