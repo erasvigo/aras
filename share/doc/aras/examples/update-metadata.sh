@@ -12,7 +12,7 @@ while true; do
         BLOCK=$(cat $LOGFILE | egrep 'Regular block: |Default block: ' | tail -n 1 | sed -e 's/.*: //' | tr -d \" | tr '_' ' ')
         FILE=$(cat $LOGFILE | grep -v ' block: ' | tail -n 1 | sed -e 's/.*\///' | sed -e 's/\.[^.]*$//')
         FILE=$(echo $FILE | sed -e 's/%\([0-9A-Fa-f][0-9A-Fa-f]\)/\\\\\x\1/g' | xargs echo -e)
-        ENCODER="ARAS 4.5"
+        ENCODER="ARAS 4.6"
         COMMENT="The Radio Station"
 
         # Print artist and title in metadata file

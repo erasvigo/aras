@@ -1,7 +1,7 @@
 # Makefile for the ARAS Radio Automation System
 
 PACKAGE      = aras
-VERSION      = 4.5
+VERSION      = 4.6
 DISTDIR  = ..
 DISTFILE = $(PACKAGE)-$(VERSION)
 
