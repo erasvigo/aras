@@ -1,0 +1,10 @@
+
+Simple station example
+----------------------
+
+This directory contains the required files for running a simple radio
+station in the background.
+
+It uses the ARAS radio automation system daemon aras-daemon, the JACK audio
+server daemon jackd, the media converter ffmpeg, the broadcast streaming client
+ices2 and the JACK port connection manager jack-plumbing.

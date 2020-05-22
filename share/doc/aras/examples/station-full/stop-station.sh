@@ -12,13 +12,13 @@ killall aras-recorder
 # Stop calfjackhost
 killall calfjackhost
 
-# Stop avconv and ices2
-killall avconv
+# Stop ffmpeg and ices2
+killall ffmpeg
 killall ices2
 
 # Stop metadata manager
 killall update-metadata.sh
 
-# Stop jack.plumbing
-killall jack.plumbing
+# Stop jack-plumbing
+killall jack-plumbing
 

@@ -1,0 +1,14 @@
+;
+; ARAS jack-plumbing patchbay
+;
+
+; Connect the block player output to the encoder
+
+(connect "aras-daemon(.*):out_block_player_1" "ffmpeg:input_1")
+(connect "aras-daemon(.*):out_block_player_2" "ffmpeg:input_1")
+
+; Connect the time signal player output to the encoder
+
+(connect "aras-daemon(.*):out_time_signal_player_1" "ffmpeg:input_1")
+(connect "aras-daemon(.*):out_time_signal_player_2" "ffmpeg:input_2")
+
