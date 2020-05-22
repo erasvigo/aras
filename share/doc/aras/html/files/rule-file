@@ -1,5 +1,5 @@
 ;
-; ARAS jack.plumbing patchbay
+; ARAS jack-plumbing patchbay
 ;
 
 ; Connect the block player output to the first element in the effect stack
