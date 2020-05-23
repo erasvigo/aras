@@ -591,7 +591,6 @@ void aras_engine_monitor_time_signal(struct aras_engine *engine, struct aras_pla
         GstState state;
         long duration;
         long position;
-        static int enable = 1;
 
         /* Get the time for the next time signal */
         switch (configuration->time_signal_mode) {
@@ -608,20 +607,15 @@ void aras_engine_monitor_time_signal(struct aras_engine *engine, struct aras_pla
         /* If a new time signal is reached, load the appropriate playlist and play the first playlist node */
         if (aras_time_reached(aras_time_current(),
                               aras_time_difference(next_time_signal, configuration->time_signal_advance),
-                              configuration->time_signal_advance)) {
-                if (enable) {
-                        /* Load playlist for the new schedule node and write log entry */
-                        engine->playlist = aras_playlist_free(engine->playlist);
-                        engine->playlist = aras_playlist_load(engine->playlist, configuration->time_signal_block, block, 0);
-                        engine->playlist_current_node = engine->playlist;
-                        snprintf(msg, sizeof(msg),"Time signal block: \"%s\"\n", configuration->time_signal_block);
-                        aras_log_write(configuration->log_file, msg);
-                        aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_CURRENT, 0);
-                        enable = 0;
-                        return;
-                }
-        } else {
-                enable = 1;
+                              configuration->engine_period)) {
+                /* Load playlist for the new schedule node and write log entry */
+                engine->playlist = aras_playlist_free(engine->playlist);
+                engine->playlist = aras_playlist_load(engine->playlist, configuration->time_signal_block, block, 0);
+                engine->playlist_current_node = engine->playlist;
+                snprintf(msg, sizeof(msg),"Time signal block: \"%s\"\n", configuration->time_signal_block);
+                aras_log_write(configuration->log_file, msg);
+                aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_CURRENT, 0);
+                return;
         }
 
         /* If no more files to play, do nothing */
