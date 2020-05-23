@@ -30,7 +30,6 @@
 #include <gst/gst.h>
 #include <aras/configuration.h>
 #include <aras/player.h>
-#include <aras/log.h>
 
 /**
  * This function is the callback function for a player.
@@ -370,8 +369,8 @@ int aras_player_init_block_player(struct aras_player *player, struct aras_config
         player->buffer_percent_b = 0;
 
         /* Create playbin_a and playbin_b */
-        player->playbin_a = gst_element_factory_make("playbin", "deck_a");
-        player->playbin_b = gst_element_factory_make("playbin", "deck_b");
+        player->playbin_a = gst_element_factory_make("playbin3", "deck_a");
+        player->playbin_b = gst_element_factory_make("playbin3", "deck_b");
 
         /* Create the audio sink bin and the video sink bin */
         aras_player_init_audio_sink_bin(&player->audio_sink_a,
@@ -403,6 +402,10 @@ int aras_player_init_block_player(struct aras_player *player, struct aras_config
         g_object_set(player->playbin_a, "video-sink", player->video_sink_a.bin, NULL);
         g_object_set(player->playbin_b, "audio-sink", player->audio_sink_b.bin, NULL);
         g_object_set(player->playbin_b, "video-sink", player->video_sink_b.bin, NULL);
+
+        /* Enable property async-handling */
+        g_object_set(player->playbin_a, "async-handling", TRUE, NULL);
+        g_object_set(player->playbin_b, "async-handling", TRUE, NULL);
 
         /* Create the buses */
         player->bus_a = gst_pipeline_get_bus(GST_PIPELINE(player->playbin_a));
@@ -441,8 +444,8 @@ int aras_player_init_time_signal_player(struct aras_player *player, struct aras_
         player->buffer_percent_b = 0;
 
         /* Create playbin_a and playbin_b */
-        player->playbin_a = gst_element_factory_make("playbin", "deck_a");
-        player->playbin_b = gst_element_factory_make("playbin", "deck_b");
+        player->playbin_a = gst_element_factory_make("playbin3", "deck_a");
+        player->playbin_b = gst_element_factory_make("playbin3", "deck_b");
 
         /* Create the audio sink bin and the video sink bin */
         aras_player_init_audio_sink_bin(&player->audio_sink_a, configuration->time_signal_player_name,
@@ -471,6 +474,10 @@ int aras_player_init_time_signal_player(struct aras_player *player, struct aras_
         g_object_set(player->playbin_a, "video-sink", player->video_sink_a.bin, NULL);
         g_object_set(player->playbin_b, "audio-sink", player->audio_sink_b.bin, NULL);
         g_object_set(player->playbin_b, "video-sink", player->video_sink_b.bin, NULL);
+        
+        /* Enable property async-handling */
+        g_object_set(player->playbin_a, "async-handling", TRUE, NULL);
+        g_object_set(player->playbin_b, "async-handling", TRUE, NULL);
 
         /* Create the buses */
         player->bus_a = gst_pipeline_get_bus(GST_PIPELINE(player->playbin_a));
@@ -594,6 +601,7 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
         case ARAS_PLAYER_UNIT_A:
                 do {
                         gst_element_get_state(player->playbin_a, &state, &pending, GST_CLOCK_TIME_NONE);
+                        g_usleep(1000);
                 } while (pending != GST_STATE_VOID_PENDING);
                 gst_element_set_state(player->playbin_a, GST_STATE_READY);
                 switch (gst_element_get_state(player->playbin_a, &state, &pending, GST_CLOCK_TIME_NONE)) {
@@ -602,7 +610,12 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
                 case GST_STATE_CHANGE_ASYNC:
                         break;
                 case GST_STATE_CHANGE_FAILURE:
-                        gst_element_set_state(player->playbin_a, GST_STATE_NULL);
+                        fprintf(stderr, "ARAS: CRITICAL: State change to GST_STATE_READY failed\n");
+                        do {
+                                gst_element_set_state(player->playbin_a, GST_STATE_NULL);
+                                g_usleep(100000);
+                                gst_element_get_state(player->playbin_a, &state, &pending, GST_CLOCK_TIME_NONE);
+                        } while (state != GST_STATE_NULL);
                         break;
                 default:
                         gst_element_set_state(player->playbin_a, GST_STATE_NULL);
@@ -612,6 +625,7 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
         case ARAS_PLAYER_UNIT_B:
                 do {
                         gst_element_get_state(player->playbin_b, &state, &pending, GST_CLOCK_TIME_NONE);
+                        g_usleep(1000);
                 } while (pending != GST_STATE_VOID_PENDING);
                 gst_element_set_state(player->playbin_b, GST_STATE_READY);
                 switch (gst_element_get_state(player->playbin_b, &state, &pending, GST_CLOCK_TIME_NONE)) {
@@ -620,7 +634,12 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
                 case GST_STATE_CHANGE_ASYNC:
                         break;
                 case GST_STATE_CHANGE_FAILURE:
-                        gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+                        fprintf(stderr, "ARAS: CRITICAL: State change to GST_STATE_READY failed\n");
+                        do {
+                                gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+                                g_usleep(100000);
+                                gst_element_get_state(player->playbin_b, &state, &pending, GST_CLOCK_TIME_NONE);
+                        } while (state != GST_STATE_NULL);
                         break;
                 default:
                         gst_element_set_state(player->playbin_b, GST_STATE_NULL);
@@ -667,6 +686,7 @@ void aras_player_set_state_playing(struct aras_player *player, int unit)
         case ARAS_PLAYER_UNIT_A:
                 do {
                         gst_element_get_state(player->playbin_a, &state, &pending, GST_CLOCK_TIME_NONE);
+                        g_usleep(1000);
                 } while (pending != GST_STATE_VOID_PENDING);
                 gst_element_set_state(player->playbin_a, GST_STATE_PLAYING);
                 switch (gst_element_get_state(player->playbin_a, &state, &pending, GST_CLOCK_TIME_NONE)) {
@@ -675,7 +695,12 @@ void aras_player_set_state_playing(struct aras_player *player, int unit)
                 case GST_STATE_CHANGE_ASYNC:
                         break;
                 case GST_STATE_CHANGE_FAILURE:
-                        gst_element_set_state(player->playbin_a, GST_STATE_NULL);
+                        fprintf(stderr, "ARAS: CRITICAL: State change to GST_STATE_PLAYING failed\n");
+                        do {
+                                gst_element_set_state(player->playbin_a, GST_STATE_NULL);
+                                g_usleep(100000);
+                                gst_element_get_state(player->playbin_a, &state, &pending, GST_CLOCK_TIME_NONE);
+                        } while (state != GST_STATE_NULL);
                         break;
                 default:
                         gst_element_set_state(player->playbin_a, GST_STATE_NULL);
@@ -685,6 +710,7 @@ void aras_player_set_state_playing(struct aras_player *player, int unit)
         case ARAS_PLAYER_UNIT_B:
                 do {
                         gst_element_get_state(player->playbin_b, &state, &pending, GST_CLOCK_TIME_NONE);
+                        g_usleep(1000);
                 } while (pending != GST_STATE_VOID_PENDING);
                 gst_element_set_state(player->playbin_b, GST_STATE_PLAYING);
                 switch (gst_element_get_state(player->playbin_b, &state, &pending, GST_CLOCK_TIME_NONE)) {
@@ -693,7 +719,12 @@ void aras_player_set_state_playing(struct aras_player *player, int unit)
                 case GST_STATE_CHANGE_ASYNC:
                         break;
                 case GST_STATE_CHANGE_FAILURE:
-                        gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+                        fprintf(stderr, "ARAS: CRITICAL: State change to GST_STATE_PLAYING failed\n");
+                        do {
+                                gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+                                g_usleep(100000);
+                                gst_element_get_state(player->playbin_b, &state, &pending, GST_CLOCK_TIME_NONE);
+                        } while (state != GST_STATE_NULL);
                         break;
                 default:
                         gst_element_set_state(player->playbin_b, GST_STATE_NULL);
