@@ -134,6 +134,8 @@ void aras_engine_fade_out(struct aras_engine *engine, struct aras_player *player
                 /* Stop playback in current unit and idle unit */
                 aras_player_set_state_ready(player, player->current_unit);
                 aras_player_set_state_ready(player, (player->current_unit + 1) % 2);
+                aras_player_set_state_null(player, player->current_unit);
+                aras_player_set_state_null(player, (player->current_unit + 1) % 2);
                 /* Next state */
                 aras_engine_set_state(engine, ARAS_ENGINE_STATE_NULL, 0);
         }
@@ -165,6 +167,7 @@ void aras_engine_crossfade(struct aras_engine *engine, struct aras_player *playe
                 aras_player_set_volume(player, (player->current_unit + 1) % 2, 0);
                 /* Stop playback in idle unit */
                 aras_player_set_state_ready(player, (player->current_unit + 1) % 2);
+                aras_player_set_state_null(player, (player->current_unit + 1) % 2);
                 /* Next state */
                 aras_engine_set_state(engine, ARAS_ENGINE_STATE_NULL, 0);
         }

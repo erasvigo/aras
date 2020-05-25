@@ -46,7 +46,7 @@ gboolean aras_player_callback_block_player_a(GstBus *bus, GstMessage *msg, gpoin
 
         switch (GST_MESSAGE_TYPE(msg)) {
         case GST_MESSAGE_EOS:
-                gst_element_set_state(player->playbin_a, GST_STATE_READY);
+                gst_element_set_state(player->playbin_a, GST_STATE_NULL);
                 break;
         case GST_MESSAGE_ERROR:
                 gst_element_set_state(player->playbin_a, GST_STATE_NULL);
@@ -79,7 +79,7 @@ gboolean aras_player_callback_block_player_b(GstBus *bus, GstMessage *msg, gpoin
 
         switch (GST_MESSAGE_TYPE(msg)) {
         case GST_MESSAGE_EOS:
-                gst_element_set_state(player->playbin_b, GST_STATE_READY);
+                gst_element_set_state(player->playbin_b, GST_STATE_NULL);
                 break;
         case GST_MESSAGE_ERROR:
                 gst_element_set_state(player->playbin_b, GST_STATE_NULL);
@@ -112,7 +112,7 @@ gboolean aras_player_callback_time_signal_player_a(GstBus *bus, GstMessage *msg,
 
         switch (GST_MESSAGE_TYPE(msg)) {
         case GST_MESSAGE_EOS:
-                gst_element_set_state(player->playbin_a, GST_STATE_READY);
+                gst_element_set_state(player->playbin_a, GST_STATE_NULL);
                 break;
         case GST_MESSAGE_ERROR:
                 gst_element_set_state(player->playbin_a, GST_STATE_NULL);
@@ -145,7 +145,7 @@ gboolean aras_player_callback_time_signal_player_b(GstBus *bus, GstMessage *msg,
 
         switch (GST_MESSAGE_TYPE(msg)) {
         case GST_MESSAGE_EOS:
-                gst_element_set_state(player->playbin_b, GST_STATE_READY);
+                gst_element_set_state(player->playbin_b, GST_STATE_NULL);
                 break;
         case GST_MESSAGE_ERROR:
                 gst_element_set_state(player->playbin_b, GST_STATE_NULL);
@@ -369,8 +369,8 @@ int aras_player_init_block_player(struct aras_player *player, struct aras_config
         player->buffer_percent_b = 0;
 
         /* Create playbin_a and playbin_b */
-        player->playbin_a = gst_element_factory_make("playbin3", "deck_a");
-        player->playbin_b = gst_element_factory_make("playbin3", "deck_b");
+        player->playbin_a = gst_element_factory_make("playbin", "deck_a");
+        player->playbin_b = gst_element_factory_make("playbin", "deck_b");
 
         /* Create the audio sink bin and the video sink bin */
         aras_player_init_audio_sink_bin(&player->audio_sink_a,
@@ -444,8 +444,8 @@ int aras_player_init_time_signal_player(struct aras_player *player, struct aras_
         player->buffer_percent_b = 0;
 
         /* Create playbin_a and playbin_b */
-        player->playbin_a = gst_element_factory_make("playbin3", "deck_a");
-        player->playbin_b = gst_element_factory_make("playbin3", "deck_b");
+        player->playbin_a = gst_element_factory_make("playbin", "deck_a");
+        player->playbin_b = gst_element_factory_make("playbin", "deck_b");
 
         /* Create the audio sink bin and the video sink bin */
         aras_player_init_audio_sink_bin(&player->audio_sink_a, configuration->time_signal_player_name,
