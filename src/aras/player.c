@@ -31,6 +31,14 @@
 #include <aras/configuration.h>
 #include <aras/player.h>
 
+void aras_player_message_check(GstBus *bus)
+{
+        GstMessage *msg;
+
+        while ((msg = gst_bus_pop(bus)) != NULL)
+                gst_message_unref(msg);
+}
+
 /**
  * This function is the callback function for a player.
  *
@@ -621,6 +629,7 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
                         gst_element_set_state(player->playbin_a, GST_STATE_NULL);
                         break;
                 }
+                aras_player_message_check(player->bus_a);
                 break;
         case ARAS_PLAYER_UNIT_B:
                 do {
@@ -645,6 +654,7 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
                         gst_element_set_state(player->playbin_b, GST_STATE_NULL);
                         break;
                 }
+                aras_player_message_check(player->bus_b);
                 break;
         default:
                 break;
@@ -706,6 +716,7 @@ void aras_player_set_state_playing(struct aras_player *player, int unit)
                         gst_element_set_state(player->playbin_a, GST_STATE_NULL);
                         break;
                 }
+                aras_player_message_check(player->bus_a);
                 break;
         case ARAS_PLAYER_UNIT_B:
                 do {
@@ -730,6 +741,7 @@ void aras_player_set_state_playing(struct aras_player *player, int unit)
                         gst_element_set_state(player->playbin_b, GST_STATE_NULL);
                         break;
                 }
+                aras_player_message_check(player->bus_b);
                 break;
         default:
                 break;
