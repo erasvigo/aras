@@ -28,6 +28,7 @@
  */
 
 #include <gst/gst.h>
+#include <vlc/vlc.h>
 #include <aras/configuration.h>
 #include <aras/player.h>
 
@@ -376,60 +377,68 @@ int aras_player_init_block_player(struct aras_player *player, struct aras_config
         player->buffer_percent_a = 0;
         player->buffer_percent_b = 0;
 
+        /* Create player */
+        player->instance = libvlc_new(0, NULL);
+        player->player_a = libvlc_media_player_new(player->instance);
+        player->player_b = libvlc_media_player_new(player->instance);
+
+        libvlc_audio_output_set(player->player_a, "jack");
+        libvlc_audio_output_set(player->player_b, "jack");
+
         /* Create playbin_a and playbin_b */
-        player->playbin_a = gst_element_factory_make("playbin", "deck_a");
-        player->playbin_b = gst_element_factory_make("playbin", "deck_b");
+        //player->playbin_a = gst_element_factory_make("playbin", "deck_a");
+        //player->playbin_b = gst_element_factory_make("playbin", "deck_b");
 
         /* Create the audio sink bin and the video sink bin */
-        aras_player_init_audio_sink_bin(&player->audio_sink_a,
-                                        configuration->block_player_name,
-                                        configuration->block_player_audio_output,
-                                        configuration->block_player_audio_device,
-                                        configuration->block_player_sample_rate,
-                                        configuration->block_player_channels);
-        aras_player_init_video_sink_bin(&player->video_sink_a,
-                                        configuration->block_player_name,
-                                        configuration->block_player_video_output,
-                                        configuration->block_player_video_device,
-                                        configuration->block_player_video_display,
-                                        configuration->block_player_display_resolution);
-        aras_player_init_audio_sink_bin(&player->audio_sink_b,
-                                        configuration->block_player_name,
-                                        configuration->block_player_audio_output,
-                                        configuration->block_player_audio_device,
-                                        configuration->block_player_sample_rate,
-                                        configuration->block_player_channels);
-        aras_player_init_video_sink_bin(&player->video_sink_b,
-                                        configuration->block_player_name,
-                                        configuration->block_player_video_output,
-                                        configuration->block_player_video_device,
-                                        configuration->block_player_video_display,
-                                        configuration->block_player_display_resolution);
+        // aras_player_init_audio_sink_bin(&player->audio_sink_a,
+        //                                 configuration->block_player_name,
+        //                                 configuration->block_player_audio_output,
+        //                                 configuration->block_player_audio_device,
+        //                                 configuration->block_player_sample_rate,
+        //                                 configuration->block_player_channels);
+        // aras_player_init_video_sink_bin(&player->video_sink_a,
+        //                                 configuration->block_player_name,
+        //                                 configuration->block_player_video_output,
+        //                                 configuration->block_player_video_device,
+        //                                 configuration->block_player_video_display,
+        //                                 configuration->block_player_display_resolution);
+        // aras_player_init_audio_sink_bin(&player->audio_sink_b,
+        //                                 configuration->block_player_name,
+        //                                 configuration->block_player_audio_output,
+        //                                 configuration->block_player_audio_device,
+        //                                 configuration->block_player_sample_rate,
+        //                                 configuration->block_player_channels);
+        // aras_player_init_video_sink_bin(&player->video_sink_b,
+        //                                 configuration->block_player_name,
+        //                                 configuration->block_player_video_output,
+        //                                 configuration->block_player_video_device,
+        //                                 configuration->block_player_video_display,
+        //                                 configuration->block_player_display_resolution);
 
-        g_object_set(player->playbin_a, "audio-sink", player->audio_sink_a.bin, NULL);
-        g_object_set(player->playbin_a, "video-sink", player->video_sink_a.bin, NULL);
-        g_object_set(player->playbin_b, "audio-sink", player->audio_sink_b.bin, NULL);
-        g_object_set(player->playbin_b, "video-sink", player->video_sink_b.bin, NULL);
+        // g_object_set(player->playbin_a, "audio-sink", player->audio_sink_a.bin, NULL);
+        // g_object_set(player->playbin_a, "video-sink", player->video_sink_a.bin, NULL);
+        // g_object_set(player->playbin_b, "audio-sink", player->audio_sink_b.bin, NULL);
+        // g_object_set(player->playbin_b, "video-sink", player->video_sink_b.bin, NULL);
 
-        /* Enable property async-handling */
-        g_object_set(player->playbin_a, "async-handling", TRUE, NULL);
-        g_object_set(player->playbin_b, "async-handling", TRUE, NULL);
+        // /* Enable property async-handling */
+        // g_object_set(player->playbin_a, "async-handling", TRUE, NULL);
+        // g_object_set(player->playbin_b, "async-handling", TRUE, NULL);
 
-        /* Create the buses */
-        player->bus_a = gst_pipeline_get_bus(GST_PIPELINE(player->playbin_a));
-        player->bus_b = gst_pipeline_get_bus(GST_PIPELINE(player->playbin_b));
-        gst_bus_add_watch(player->bus_a, aras_player_callback_block_player_a, player);
-        gst_bus_add_watch(player->bus_b, aras_player_callback_block_player_b, player);
-        //gst_object_unref(player->bus_a);
-        //gst_object_unref(player->bus_b);
+        // /* Create the buses */
+        // player->bus_a = gst_pipeline_get_bus(GST_PIPELINE(player->playbin_a));
+        // player->bus_b = gst_pipeline_get_bus(GST_PIPELINE(player->playbin_b));
+        // gst_bus_add_watch(player->bus_a, aras_player_callback_block_player_a, player);
+        // gst_bus_add_watch(player->bus_b, aras_player_callback_block_player_b, player);
+        // //gst_object_unref(player->bus_a);
+        // //gst_object_unref(player->bus_b);
 
         /* Set the volume */
-        g_object_set(player->playbin_a, "volume", player->volume_a, NULL);
-        g_object_set(player->playbin_b, "volume", player->volume_b, NULL);
+        //g_object_set(player->playbin_a, "volume", player->volume_a, NULL);
+        //g_object_set(player->playbin_b, "volume", player->volume_b, NULL);
 
         /* Set state to GST_STATE_NULL */
-        gst_element_set_state(player->playbin_a, GST_STATE_NULL);
-        gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+        //gst_element_set_state(player->playbin_a, GST_STATE_NULL);
+        //gst_element_set_state(player->playbin_b, GST_STATE_NULL);
         return 0;
 }
 
@@ -518,11 +527,13 @@ void aras_player_set_volume(struct aras_player *player, int unit, float volume)
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
                 player->volume_a = volume;
-                g_object_set(player->playbin_a, "volume", player->volume_a, NULL);
+                libvlc_audio_set_volume(player->player_a, 1e2 * volume);
+                //g_object_set(player->playbin_a, "volume", player->volume_a, NULL);
                 break;
         case ARAS_PLAYER_UNIT_B:
                 player->volume_b = volume;
-                g_object_set(player->playbin_b, "volume", player->volume_b, NULL);
+                libvlc_audio_set_volume(player->player_b, 1e2 * volume);
+                //g_object_set(player->playbin_b, "volume", player->volume_b, NULL);
                 break;
         default:
                 break;
@@ -542,11 +553,13 @@ void aras_player_set_volume_increment(struct aras_player *player, int unit, floa
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
                 player->volume_a += slope * (limit - player->volume_a);
-                g_object_set(player->playbin_a, "volume", player->volume_a, NULL);
+                libvlc_audio_set_volume(player->player_a, 1e2 * player->volume_a);
+                //g_object_set(player->playbin_a, "volume", player->volume_a, NULL);
                 break;
         case ARAS_PLAYER_UNIT_B:
                 player->volume_b += slope * (limit - player->volume_b);
-                g_object_set(player->playbin_b, "volume", player->volume_b, NULL);
+                libvlc_audio_set_volume(player->player_b, 1e2 * player->volume_b);
+                //g_object_set(player->playbin_b, "volume", player->volume_b, NULL);
                 break;
         default:
                 break;
@@ -564,10 +577,16 @@ void aras_player_set_uri(struct aras_player *player, int unit, gchar *uri)
 {
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
-                g_object_set(player->playbin_a, "uri", uri, NULL);
+                libvlc_media_release(player->media_a);
+                player->media_a = libvlc_media_new_location(player->instance, uri);
+                libvlc_media_player_set_media(player->player_a, player->media_a);
+                //g_object_set(player->playbin_a, "uri", uri, NULL);
                 break;
         case ARAS_PLAYER_UNIT_B:
-                g_object_set(player->playbin_b, "uri", uri, NULL);
+                libvlc_media_release(player->media_b);
+                player->media_b = libvlc_media_new_location(player->instance, uri);
+                libvlc_media_player_set_media(player->player_b, player->media_b);
+                //g_object_set(player->playbin_b, "uri", uri, NULL);
                 break;
         default:
                 break;
@@ -584,10 +603,12 @@ void aras_player_set_state_null(struct aras_player *player, int unit)
 {
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
-                gst_element_set_state(player->playbin_a, GST_STATE_NULL);
+                libvlc_media_player_stop(player->player_a);
+                //gst_element_set_state(player->playbin_a, GST_STATE_NULL);
                 break;
         case ARAS_PLAYER_UNIT_B:
-                gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+                libvlc_media_player_stop(player->player_a);
+                //gst_element_set_state(player->playbin_b, GST_STATE_NULL);
                 break;
         default:
                 break;
@@ -608,7 +629,8 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
 
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
-                do {
+                libvlc_media_player_stop(player->player_a);
+                /*do {
                         gst_element_get_state(player->playbin_a, &state, &pending, GST_CLOCK_TIME_NONE);
                         g_usleep(1000);
                 } while (pending != GST_STATE_VOID_PENDING);
@@ -636,10 +658,11 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
                         gst_element_set_state(player->playbin_a, GST_STATE_NULL);
                         break;
                 }
-                aras_player_message_check(player->bus_a);
+                aras_player_message_check(player->bus_a);*/
                 break;
         case ARAS_PLAYER_UNIT_B:
-                do {
+                libvlc_media_player_stop(player->player_b);
+                /*do {
                         gst_element_get_state(player->playbin_b, &state, &pending, GST_CLOCK_TIME_NONE);
                         g_usleep(1000);
                 } while (pending != GST_STATE_VOID_PENDING);
@@ -667,7 +690,7 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
                         gst_element_set_state(player->playbin_b, GST_STATE_NULL);
                         break;
                 }
-                aras_player_message_check(player->bus_b);
+                aras_player_message_check(player->bus_b);*/
                 break;
         default:
                 break;
@@ -708,6 +731,8 @@ void aras_player_set_state_playing(struct aras_player *player, int unit)
 
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
+                     libvlc_media_player_play(player->player_a);
+                /*
                 do {
                         gst_element_get_state(player->playbin_a, &state, &pending, GST_CLOCK_TIME_NONE);
                         g_usleep(1000);
@@ -736,9 +761,11 @@ void aras_player_set_state_playing(struct aras_player *player, int unit)
                         gst_element_set_state(player->playbin_a, GST_STATE_NULL);
                         break;
                 }
-                aras_player_message_check(player->bus_a);
+                aras_player_message_check(player->bus_a);*/
                 break;
         case ARAS_PLAYER_UNIT_B:
+                libvlc_media_player_play(player->player_b);
+                /*
                 do {
                         gst_element_get_state(player->playbin_b, &state, &pending, GST_CLOCK_TIME_NONE);
                         g_usleep(1000);
@@ -767,7 +794,7 @@ void aras_player_set_state_playing(struct aras_player *player, int unit)
                         gst_element_set_state(player->playbin_b, GST_STATE_NULL);
                         break;
                 }
-                aras_player_message_check(player->bus_b);
+                aras_player_message_check(player->bus_b);*/
                 break;
         default:
                 break;
@@ -822,14 +849,16 @@ float aras_player_get_volume(struct aras_player *player, int unit)
  * @param   unit    The identifier of the player unit
  * @param   state   Pointer to the buffer where the state is written
  */
-void aras_player_get_state(struct aras_player *player, int unit, GstState *state)
+void aras_player_get_state(struct aras_player *player, int unit, libvlc_state_t *state)
 {
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
-                gst_element_get_state(player->playbin_a, state, NULL, GST_CLOCK_TIME_NONE);
+                *state = libvlc_media_player_get_state(player->player_a);
+                //gst_element_get_state(player->playbin_a, state, NULL, GST_CLOCK_TIME_NONE);
                 break;
         case ARAS_PLAYER_UNIT_B:
-                gst_element_get_state(player->playbin_b, state, NULL, GST_CLOCK_TIME_NONE);
+                *state = libvlc_media_player_get_state(player->player_b);
+                //gst_element_get_state(player->playbin_b, state, NULL, GST_CLOCK_TIME_NONE);
                 break;
         default:
                 break;
@@ -881,25 +910,28 @@ long int aras_player_get_duration(struct aras_player *player, int unit)
 
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
-                gst_element_get_state(player->playbin_a, &state, NULL, GST_CLOCK_TIME_NONE);
+                duration = libvlc_media_player_get_length(player->player_a);
+                /*gst_element_get_state(player->playbin_a, &state, NULL, GST_CLOCK_TIME_NONE);
                 if (state == GST_STATE_PLAYING)
                         gst_element_query_duration(player->playbin_a, GST_FORMAT_TIME, &duration);
                 else
-                        duration = 0;
+                        duration = 0;*/
                 break;
         case ARAS_PLAYER_UNIT_B:
-                gst_element_get_state(player->playbin_b, &state, NULL, GST_CLOCK_TIME_NONE);
+                duration = libvlc_media_player_get_length(player->player_b);
+                /*gst_element_get_state(player->playbin_b, &state, NULL, GST_CLOCK_TIME_NONE);
                 if (state == GST_STATE_PLAYING)
                         gst_element_query_duration(player->playbin_b, GST_FORMAT_TIME, &duration);
                 else
-                        duration = 0;
+                        duration = 0;*/
                 break;
         default:
                         duration = 0;
                 break;
         }
 
-        return (long int)(lldiv(duration, 1000000).quot);
+        //return (long int)(lldiv(duration, 1000000).quot);
+        return duration;
 }
 
 /**
@@ -917,23 +949,26 @@ long int aras_player_get_position(struct aras_player *player, int unit)
 
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
-                gst_element_get_state(player->playbin_a, &state, NULL, GST_CLOCK_TIME_NONE);
+                position = libvlc_media_player_get_time(player->player_a);
+                /*gst_element_get_state(player->playbin_a, &state, NULL, GST_CLOCK_TIME_NONE);
                 if (state == GST_STATE_PLAYING)
                         gst_element_query_position(player->playbin_a, GST_FORMAT_TIME, &position);
                 else
-                        position = 0;
+                        position = 0;*/
                 break;
         case ARAS_PLAYER_UNIT_B:
-                gst_element_get_state(player->playbin_b, &state, NULL, GST_CLOCK_TIME_NONE);
+                position = libvlc_media_player_get_time(player->player_b);
+                /*gst_element_get_state(player->playbin_b, &state, NULL, GST_CLOCK_TIME_NONE);
                 if (state == GST_STATE_PLAYING)
                         gst_element_query_position(player->playbin_b, GST_FORMAT_TIME, &position);
                 else
-                        position = 0;
+                        position = 0;*/
                 break;
         default:
                         position = 0;
                 break;
         }
 
-        return (long int)(lldiv(position, 1000000).quot);
+        //return (long int)(lldiv(position, 1000000).quot);
+        return position;
 }

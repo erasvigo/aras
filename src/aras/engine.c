@@ -134,8 +134,6 @@ void aras_engine_fade_out(struct aras_engine *engine, struct aras_player *player
                 /* Stop playback in current unit and idle unit */
                 aras_player_set_state_ready(player, player->current_unit);
                 aras_player_set_state_ready(player, (player->current_unit + 1) % 2);
-                aras_player_set_state_null(player, player->current_unit);
-                aras_player_set_state_null(player, (player->current_unit + 1) % 2);
                 /* Next state */
                 aras_engine_set_state(engine, ARAS_ENGINE_STATE_NULL, 0);
         }
@@ -167,7 +165,6 @@ void aras_engine_crossfade(struct aras_engine *engine, struct aras_player *playe
                 aras_player_set_volume(player, (player->current_unit + 1) % 2, 0);
                 /* Stop playback in idle unit */
                 aras_player_set_state_ready(player, (player->current_unit + 1) % 2);
-                aras_player_set_state_null(player, (player->current_unit + 1) % 2);
                 /* Next state */
                 aras_engine_set_state(engine, ARAS_ENGINE_STATE_NULL, 0);
         }
@@ -355,7 +352,7 @@ void aras_engine_play_default(struct aras_engine *engine, struct aras_player *pl
 void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_player *player, struct aras_configuration *configuration, struct aras_schedule *schedule, struct aras_block *block)
 {
         char msg[ARAS_LOG_MESSAGE_MAX];
-        GstState state;
+        libvlc_state_t state;
         struct aras_schedule_node *current_schedule_node;
         struct aras_schedule_node *next_schedule_node;
         static int pending_playlist = 0;
@@ -406,7 +403,7 @@ void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_p
         /* If the current unit is not playing and next schedule node does not interfere with the crossfade, play the next playlist node */
         aras_player_get_state(player, player->current_unit, &state);
         switch (state) {
-        case GST_STATE_NULL:
+        case libvlc_Error:
                 aras_player_set_state_ready(player, player->current_unit);
                 if (pending_playlist == 1) {
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_CURRENT, 0);
@@ -415,7 +412,7 @@ void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_p
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 }
                 break;
-        case GST_STATE_READY:
+        case libvlc_Ended:
                 if (pending_playlist == 1) {
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_CURRENT, 0);
                         pending_playlist = 0;
@@ -423,7 +420,7 @@ void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_p
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 }
                 break;
-        case GST_STATE_PLAYING:
+        case libvlc_Playing:
                 /* If not streaming play the next playlist node */
                 if ((duration = aras_player_get_duration(player, player->current_unit)) != 0) {
                         position = aras_player_get_position(player, player->current_unit);
@@ -456,7 +453,7 @@ void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_p
 void aras_engine_monitor_schedule_hard(struct aras_engine *engine, struct aras_player *player, struct aras_configuration *configuration, struct aras_schedule *schedule, struct aras_block *block)
 {
         char msg[ARAS_LOG_MESSAGE_MAX];
-        GstState state;
+        libvlc_state_t state;
         struct aras_schedule_node *current_schedule_node;
         struct aras_schedule_node *next_schedule_node;
         long duration;
@@ -506,14 +503,14 @@ void aras_engine_monitor_schedule_hard(struct aras_engine *engine, struct aras_p
         /* If the current unit is not playing and next schedule node does not interfere with the crossfade, play the next playlist node */
         aras_player_get_state(player, player->current_unit, &state);
         switch (state) {
-        case GST_STATE_NULL:
+        case libvlc_Error:
                 aras_player_set_state_ready(player, player->current_unit);
                 aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 break;
-        case GST_STATE_READY:
+        case libvlc_Ended:
                 aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 break;
-        case GST_STATE_PLAYING:
+        case libvlc_Playing:
                 /* If not streaming play the next playlist node */
                 if ((duration = aras_player_get_duration(player, player->current_unit)) != 0) {
                         position = aras_player_get_position(player, player->current_unit);
@@ -591,7 +588,7 @@ void aras_engine_monitor_time_signal(struct aras_engine *engine, struct aras_pla
 {
         long int next_time_signal;
         char msg[ARAS_LOG_MESSAGE_MAX];
-        GstState state;
+        libvlc_state_t state;
         long duration;
         long position;
 
@@ -628,14 +625,14 @@ void aras_engine_monitor_time_signal(struct aras_engine *engine, struct aras_pla
         /* Play the next playlist node */
         aras_player_get_state(player, player->current_unit, &state);
         switch (state) {
-        case GST_STATE_NULL:
+        case libvlc_Error:
                 aras_player_set_state_ready(player, player->current_unit);
                 aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 break;
-        case GST_STATE_READY:
+        case libvlc_Ended:
                 aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 break;
-        case GST_STATE_PLAYING:
+        case libvlc_Playing:
                 /* If not streaming play the next playlist node */
                 if ((duration = aras_player_get_duration(player, player->current_unit)) != 0) {
                         position = aras_player_get_position(player, player->current_unit);

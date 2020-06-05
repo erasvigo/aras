@@ -511,7 +511,7 @@ void aras_gui_player_update_file_next_label(struct aras_gui_player *gui, struct 
  */
 void aras_gui_player_update_file_progress_bar(struct aras_gui_player *gui, struct aras_player *player)
 {
-        GstState state;
+        libvlc_state_t state;
         long int duration;
         long int position;
         float fraction;
@@ -543,9 +543,9 @@ void aras_gui_player_update_file_progress_bar(struct aras_gui_player *gui, struc
                          duration_minutes,
                          duration_seconds);
         } else {
-                /* If duration is zero and player state is GST_STATE_PLAYING then notify streaming */
+                /* If duration is zero and player state is libvlc_Playing then notify streaming */
                 aras_player_get_state(player, player->current_unit, &state);
-                if (state == GST_STATE_PLAYING) {
+                if (state == libvlc_Playing) {
                         /* Write string to be shown in the progress bar */
                         position = aras_player_get_position(player, player->current_unit);
                         aras_time_convert(position, &position_hours, &position_minutes, &position_seconds);
@@ -554,43 +554,50 @@ void aras_gui_player_update_file_progress_bar(struct aras_gui_player *gui, struc
                                  sizeof(gui->file_progress_bar_str),
                                  "Connected to streaming %.2d:%.2d:%.2d", position_hours, position_minutes, position_seconds);
                 } else {
-                        /* Check if buffering */
-                        if ((player->buffer_percent_a > 0 && player->buffer_percent_a < 100) &&
-                            (player->buffer_percent_b == 0)) {
+                        aras_player_get_state(player, player->current_unit, &state);
+                        fraction = 0;
+                        snprintf(gui->file_progress_bar_str,
+                                 sizeof(gui->file_progress_bar_str),
+                                 "Buffering...");
 
-                                fraction = (float)(player->buffer_percent_a)/100;
-                                snprintf(gui->file_progress_bar_str,
-                                         sizeof(gui->file_progress_bar_str),
-                                         "Buffering... %d%%", player->buffer_percent_a);
 
-                        } else if ((player->buffer_percent_b > 0 && player->buffer_percent_b < 100) &&
-                                (player->buffer_percent_a == 0)) {
+                        // /* Check if buffering */
+                        // if ((player->buffer_percent_a > 0 && player->buffer_percent_a < 100) &&
+                        //     (player->buffer_percent_b == 0)) {
 
-                                fraction = (float)(player->buffer_percent_b)/100;
-                                snprintf(gui->file_progress_bar_str,
-                                         sizeof(gui->file_progress_bar_str),
-                                         "Buffering... %d%%", player->buffer_percent_b);
+                        //         fraction = (float)(player->buffer_percent_a)/100;
+                        //         snprintf(gui->file_progress_bar_str,
+                        //                  sizeof(gui->file_progress_bar_str),
+                        //                  "Buffering... %d%%", player->buffer_percent_a);
 
-                        } else if ((player->buffer_percent_a > 0 && player->buffer_percent_a < 100) &&
-                                   (player->buffer_percent_b > 0 && player->buffer_percent_b < 100)) {
+                        // } else if ((player->buffer_percent_b > 0 && player->buffer_percent_b < 100) &&
+                        //         (player->buffer_percent_a == 0)) {
 
-                                if (player->buffer_percent_a < player->buffer_percent_b) {
-                                        fraction = (float)(player->buffer_percent_a)/100;
-                                        snprintf(gui->file_progress_bar_str,
-                                                 sizeof(gui->file_progress_bar_str),
-                                                 "Buffering... %d%%", player->buffer_percent_a);
-                                } else {
-                                        fraction = (float)(player->buffer_percent_b)/100;
-                                        snprintf(gui->file_progress_bar_str,
-                                                 sizeof(gui->file_progress_bar_str),
-                                                 "Buffering... %d%%", player->buffer_percent_b);
-                                }
-                        } else {
-                                fraction = 0;
-                                snprintf(gui->file_progress_bar_str,
-                                        sizeof(gui->file_progress_bar_str),
-                                        "Waiting for playback");
-                        }
+                        //         fraction = (float)(player->buffer_percent_b)/100;
+                        //         snprintf(gui->file_progress_bar_str,
+                        //                  sizeof(gui->file_progress_bar_str),
+                        //                  "Buffering... %d%%", player->buffer_percent_b);
+
+                        // } else if ((player->buffer_percent_a > 0 && player->buffer_percent_a < 100) &&
+                        //            (player->buffer_percent_b > 0 && player->buffer_percent_b < 100)) {
+
+                        //         if (player->buffer_percent_a < player->buffer_percent_b) {
+                        //                 fraction = (float)(player->buffer_percent_a)/100;
+                        //                 snprintf(gui->file_progress_bar_str,
+                        //                          sizeof(gui->file_progress_bar_str),
+                        //                          "Buffering... %d%%", player->buffer_percent_a);
+                        //         } else {
+                        //                 fraction = (float)(player->buffer_percent_b)/100;
+                        //                 snprintf(gui->file_progress_bar_str,
+                        //                          sizeof(gui->file_progress_bar_str),
+                        //                          "Buffering... %d%%", player->buffer_percent_b);
+                        //         }
+                        // } else {
+                        //         fraction = 0;
+                        //         snprintf(gui->file_progress_bar_str,
+                        //                 sizeof(gui->file_progress_bar_str),
+                        //                 "Waiting for playback");
+                        // }
                 }
         }
 
