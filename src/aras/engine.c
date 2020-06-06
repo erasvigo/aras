@@ -42,7 +42,7 @@
 #if (ARAS_CONFIG_MEDIA_LIBRARY == ARAS_CONFIG_MEDIA_LIBRARY_GST)
 #include <aras/player.h>
 #elif (ARAS_CONFIG_MEDIA_LIBRARY == ARAS_CONFIG_MEDIA_LIBRARY_VLC)
-#include <aras/player_vlclib.h>
+#include <aras/player_vlc.h>
 #endif
 #include <aras/engine.h>
 
