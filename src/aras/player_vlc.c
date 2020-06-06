@@ -55,6 +55,8 @@ int aras_player_init_block_player(struct aras_player *player, struct aras_config
         player->instance = libvlc_new(0, NULL);
         player->player_a = libvlc_media_player_new(player->instance);
         player->player_b = libvlc_media_player_new(player->instance);
+        player->media_a = libvlc_media_new_location(player->instance, "file:///dev/null");
+        player->media_b = libvlc_media_new_location(player->instance, "file:///dev/null");
 
         switch (configuration->block_player_audio_output) {
         case ARAS_CONFIGURATION_MODE_AUDIO_ALSA:
@@ -92,6 +94,9 @@ int aras_player_init_block_player(struct aras_player *player, struct aras_config
                                 "f32l",
                                 configuration->block_player_sample_rate,
                                 configuration->block_player_channels);
+
+        libvlc_audio_set_volume(player->player_a, (int)player->volume_a);
+        libvlc_audio_set_volume(player->player_b, (int)player->volume_a);
 
         libvlc_video_set_format(player->player_a,
 		                "RGBA",
@@ -134,6 +139,8 @@ int aras_player_init_time_signal_player(struct aras_player *player, struct aras_
         player->instance = libvlc_new(0, NULL);
         player->player_a = libvlc_media_player_new(player->instance);
         player->player_b = libvlc_media_player_new(player->instance);
+        player->media_a = libvlc_media_new_location(player->instance, "file:///dev/null");
+        player->media_b = libvlc_media_new_location(player->instance, "file:///dev/null");
 
         switch (configuration->time_signal_player_audio_output) {
         case ARAS_CONFIGURATION_MODE_AUDIO_ALSA:
@@ -172,6 +179,9 @@ int aras_player_init_time_signal_player(struct aras_player *player, struct aras_
                                 configuration->time_signal_player_sample_rate,
                                 configuration->time_signal_player_channels);
 
+        libvlc_audio_set_volume(player->player_a, (int)player->volume_a);
+        libvlc_audio_set_volume(player->player_b, (int)player->volume_b);
+
         libvlc_video_set_format(player->player_a,
 		                "RGBA",
                                 configuration->time_signal_player_display_resolution[0],
@@ -201,11 +211,11 @@ void aras_player_set_volume(struct aras_player *player, int unit, float volume)
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
                 player->volume_a = volume;
-                libvlc_audio_set_volume(player->player_a, 1e2 * volume);
+                libvlc_audio_set_volume(player->player_a, (int)(1e2 * volume));
                 break;
         case ARAS_PLAYER_UNIT_B:
                 player->volume_b = volume;
-                libvlc_audio_set_volume(player->player_b, 1e2 * volume);
+                libvlc_audio_set_volume(player->player_b, (int)(1e2 * volume));
                 break;
         default:
                 break;
@@ -225,11 +235,11 @@ void aras_player_set_volume_increment(struct aras_player *player, int unit, floa
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
                 player->volume_a += slope * (limit - player->volume_a);
-                libvlc_audio_set_volume(player->player_a, 1e2 * player->volume_a);
+                libvlc_audio_set_volume(player->player_a, (int)(1e2 * player->volume_a));
                 break;
         case ARAS_PLAYER_UNIT_B:
                 player->volume_b += slope * (limit - player->volume_b);
-                libvlc_audio_set_volume(player->player_b, 1e2 * player->volume_b);
+                libvlc_audio_set_volume(player->player_b, (int)(1e2 * player->volume_b));
                 break;
         default:
                 break;
