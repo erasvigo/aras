@@ -30,11 +30,11 @@ player:
 recorder:
 	cd src/aras && make recorder
 
-daemon-vlclib:
-	cd src/aras && make daemon-vlclib
+daemon-vlc:
+	cd src/aras && make daemon-vlc
 
-player-vlclib:
-	cd src/aras && make player-vlclib
+player-vlc:
+	cd src/aras && make player-vlc
 
 .PHONY: clean
 clean:

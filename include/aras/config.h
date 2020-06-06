@@ -26,8 +26,12 @@
  * Header file for the ARAS Radio Automation System. Headers for
  * application wide configuration.
  */
- 
- #define ARAS_CONFIG_MEDIA_LIBRARY_GSTREAMER    0
- #define ARAS_CONFIG_MEDIA_LIBRARY_VLCLIB       1
+#ifndef _CONFIG_H
+#define _CONFIG_H
 
- #define ARAS_CONFIG_MEDIA_LIBRARY              ARAS_CONFIG_MEDIA_LIBRARY_GSTREAMER
+#define ARAS_CONFIG_MEDIA_LIBRARY_GST   0
+#define ARAS_CONFIG_MEDIA_LIBRARY_VLC   1
+
+#define ARAS_CONFIG_MEDIA_LIBRARY       ARAS_CONFIG_MEDIA_LIBRARY_GST
+
+#endif

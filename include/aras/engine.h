@@ -35,9 +35,9 @@
 #include <aras/configuration.h>
 #include <aras/schedule.h>
 #include <aras/block.h>
-#if (ARAS_CONFIG_MEDIA_LIBRARY == ARAS_CONFIG_MEDIA_LIBRARY_GSTREAMER)
+#if (ARAS_CONFIG_MEDIA_LIBRARY == ARAS_CONFIG_MEDIA_LIBRARY_GST)
 #include <aras/player.h>
-#elif (ARAS_CONFIG_MEDIA_LIBRARY == ARAS_CONFIG_MEDIA_LIBRARY_VLCLIB)
+#elif (ARAS_CONFIG_MEDIA_LIBRARY == ARAS_CONFIG_MEDIA_LIBRARY_VLC)
 #include <aras/player_vlclib.h>
 #endif
 
