@@ -152,8 +152,7 @@ int aras_main_player_init(struct aras_main_player *main_player)
                 return -1;
         }
 
-        /* Initialize GStreamer and players */
-        gst_init(NULL, NULL);
+        /* Initialize players */
         aras_player_init_block_player(&main_player->block_player, &main_player->configuration);
         aras_player_init_time_signal_player(&main_player->time_signal_player, &main_player->configuration);
 

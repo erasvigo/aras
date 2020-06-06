@@ -403,7 +403,7 @@ void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_p
         /* If the current unit is not playing and next schedule node does not interfere with the crossfade, play the next playlist node */
         aras_player_get_state(player, player->current_unit, &state);
         switch (state) {
-        case libvlc_Error:
+        case ARAS_PLAYER_STATE_ERROR:
                 aras_player_set_state_ready(player, player->current_unit);
                 if (pending_playlist == 1) {
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_CURRENT, 0);
@@ -412,7 +412,7 @@ void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_p
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 }
                 break;
-        case libvlc_Ended:
+        case ARAS_PLAYER_STATE_STOP:
                 if (pending_playlist == 1) {
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_CURRENT, 0);
                         pending_playlist = 0;
@@ -420,7 +420,7 @@ void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_p
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 }
                 break;
-        case libvlc_Playing:
+        case ARAS_PLAYER_STATE_PLAYING:
                 /* If not streaming play the next playlist node */
                 if ((duration = aras_player_get_duration(player, player->current_unit)) != 0) {
                         position = aras_player_get_position(player, player->current_unit);
@@ -503,14 +503,14 @@ void aras_engine_monitor_schedule_hard(struct aras_engine *engine, struct aras_p
         /* If the current unit is not playing and next schedule node does not interfere with the crossfade, play the next playlist node */
         aras_player_get_state(player, player->current_unit, &state);
         switch (state) {
-        case libvlc_Error:
+        case ARAS_PLAYER_STATE_ERROR:
                 aras_player_set_state_ready(player, player->current_unit);
                 aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 break;
-        case libvlc_Ended:
+        case ARAS_PLAYER_STATE_STOP:
                 aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 break;
-        case libvlc_Playing:
+        case ARAS_PLAYER_STATE_PLAYING:
                 /* If not streaming play the next playlist node */
                 if ((duration = aras_player_get_duration(player, player->current_unit)) != 0) {
                         position = aras_player_get_position(player, player->current_unit);

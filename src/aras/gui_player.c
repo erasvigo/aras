@@ -545,7 +545,7 @@ void aras_gui_player_update_file_progress_bar(struct aras_gui_player *gui, struc
         } else {
                 /* If duration is zero and player state is libvlc_Playing then notify streaming */
                 aras_player_get_state(player, player->current_unit, &state);
-                if (state == libvlc_Playing) {
+                if (state == ARAS_PLAYER_STATE_PLAYING) {
                         /* Write string to be shown in the progress bar */
                         position = aras_player_get_position(player, player->current_unit);
                         aras_time_convert(position, &position_hours, &position_minutes, &position_seconds);
@@ -553,13 +553,12 @@ void aras_gui_player_update_file_progress_bar(struct aras_gui_player *gui, struc
                         snprintf(gui->file_progress_bar_str,
                                  sizeof(gui->file_progress_bar_str),
                                  "Connected to streaming %.2d:%.2d:%.2d", position_hours, position_minutes, position_seconds);
-                } else {
+                } else if (state == ARAS_PLAYER_STATE_BUFFERING) {
                         aras_player_get_state(player, player->current_unit, &state);
                         fraction = 0;
                         snprintf(gui->file_progress_bar_str,
                                  sizeof(gui->file_progress_bar_str),
                                  "Buffering...");
-
 
                         // /* Check if buffering */
                         // if ((player->buffer_percent_a > 0 && player->buffer_percent_a < 100) &&
