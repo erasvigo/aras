@@ -29,7 +29,7 @@
 
 #include <vlc/vlc.h>
 #include <aras/configuration.h>
-#include <aras/player_vlclib.h>
+#include <aras/player_vlc.h>
 
 /**
  * This function initializes a player structure with the block player
