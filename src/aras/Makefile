@@ -6,27 +6,33 @@ INCDIR = ../../include
 BUILDDIR = ../../build
 BINDIR = ../../bin
 
-CFLAGS = -c -g -O3 -Wall
+CFLAGS = -c -O3 -Wall
 LFLAGS =
 
 default: all
 
 all: daemon player recorder
 
-daemon: main_daemon.o configuration.o schedule.o block.o engine.o player.o playlist.o log.o parse.o time.o
+daemon: config_gstreamer.h main_daemon.o configuration.o schedule.o block.o engine.o player.o playlist.o log.o parse.o time.o
 	$(CC) $(LFLAGS) $(BUILDDIR)/parse.o $(BUILDDIR)/time.o $(BUILDDIR)/log.o $(BUILDDIR)/playlist.o $(BUILDDIR)/configuration.o $(BUILDDIR)/schedule.o $(BUILDDIR)/block.o $(BUILDDIR)/engine.o $(BUILDDIR)/player.o $(BUILDDIR)/main_daemon.o `pkg-config --libs glib-2.0 gstreamer-1.0` -o $(BINDIR)/aras-daemon
 
-player: main_player.o gui_player.o configuration.o schedule.o block.o engine.o player.o playlist.o log.o parse.o time.o
+player: config_gstreamer.h main_player.o gui_player.o configuration.o schedule.o block.o engine.o player.o playlist.o log.o parse.o time.o
 	$(CC) $(LFLAGS) $(BUILDDIR)/parse.o $(BUILDDIR)/time.o $(BUILDDIR)/log.o $(BUILDDIR)/playlist.o $(BUILDDIR)/configuration.o $(BUILDDIR)/schedule.o $(BUILDDIR)/block.o $(BUILDDIR)/engine.o $(BUILDDIR)/player.o $(BUILDDIR)/gui_player.o $(BUILDDIR)/main_player.o `pkg-config --libs glib-2.0 gstreamer-1.0 gtk+-3.0` -o $(BINDIR)/aras-player
 
-recorder: main_recorder.o gui_recorder.o configuration.o schedule.o block.o recorder.o playlist.o log.o parse.o time.o
+recorder: config_gstreamer.h main_recorder.o gui_recorder.o configuration.o schedule.o block.o recorder.o playlist.o log.o parse.o time.o
 	$(CC) $(LFLAGS) $(BUILDDIR)/parse.o $(BUILDDIR)/time.o $(BUILDDIR)/log.o $(BUILDDIR)/playlist.o $(BUILDDIR)/configuration.o $(BUILDDIR)/schedule.o $(BUILDDIR)/block.o $(BUILDDIR)/recorder.o $(BUILDDIR)/gui_recorder.o $(BUILDDIR)/main_recorder.o `pkg-config --libs glib-2.0 gstreamer-1.0 gtk+-3.0` -o $(BINDIR)/aras-recorder
 
-daemon-vlclib: main_daemon_vlclib.o configuration.o schedule.o block.o engine_vlclib.o player_vlclib.o playlist.o log.o parse.o time.o
+daemon-vlclib: config_vlclib.h main_daemon_vlclib.o configuration.o schedule.o block.o engine_vlclib.o player_vlclib.o playlist.o log.o parse.o time.o
 	$(CC) $(LFLAGS) $(BUILDDIR)/parse.o $(BUILDDIR)/time.o $(BUILDDIR)/log.o $(BUILDDIR)/playlist.o $(BUILDDIR)/configuration.o $(BUILDDIR)/schedule.o $(BUILDDIR)/block.o $(BUILDDIR)/engine.o $(BUILDDIR)/player.o $(BUILDDIR)/main_daemon.o `pkg-config --libs glib-2.0 'libvlc >= 1.1.0' x11` -o $(BINDIR)/aras-daemon
 
-player-vlclib: main_player_vlclib.o gui_player.o configuration.o schedule.o block.o engine_vlclib.o player_vlclib.o playlist.o log.o parse.o time.o
+player-vlclib: config_vlclib.h main_player_vlclib.o gui_player.o configuration.o schedule.o block.o engine_vlclib.o player_vlclib.o playlist.o log.o parse.o time.o
 	$(CC) $(LFLAGS) $(BUILDDIR)/parse.o $(BUILDDIR)/time.o $(BUILDDIR)/log.o $(BUILDDIR)/playlist.o $(BUILDDIR)/configuration.o $(BUILDDIR)/schedule.o $(BUILDDIR)/block.o $(BUILDDIR)/engine.o $(BUILDDIR)/player.o $(BUILDDIR)/gui_player.o $(BUILDDIR)/main_player.o `pkg-config --libs glib-2.0 'libvlc >= 1.1.0' x11 gtk+-3.0` -o $(BINDIR)/aras-player
+
+config_gstreamer.h:
+	cp $(INCDIR)/aras/config_gstreamer.h $(INCDIR)/aras/config.h
+
+config_vlclib.h:
+	cp $(INCDIR)/aras/config_vlclib.h $(INCDIR)/aras/config.h
 
 main_recorder.o:
 	$(CC) $(CFLAGS) -I$(INCDIR) `pkg-config --cflags glib-2.0 gstreamer-1.0 gtk+-3.0` $(SRCDIR)/main_recorder.c -o $(BUILDDIR)/main_recorder.o
