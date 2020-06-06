@@ -243,7 +243,7 @@ void aras_player_set_volume_increment(struct aras_player *player, int unit, floa
  * @param   unit    The identifier of the player unit
  * @param   uri     A pointer to the URI string
  */
-void aras_player_set_uri(struct aras_player *player, int unit, gchar *uri)
+void aras_player_set_uri(struct aras_player *player, int unit, char *uri)
 {
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
@@ -262,7 +262,7 @@ void aras_player_set_uri(struct aras_player *player, int unit, gchar *uri)
 }
 
 /**
- * This function sets the player state to GST_STATE_NULL.
+ * This function sets the player state to stop state.
  *
  * @param   player  Pointer to the player
  * @param   unit    The identifier of the player unit
@@ -274,7 +274,7 @@ void aras_player_set_state_null(struct aras_player *player, int unit)
                 libvlc_media_player_stop(player->player_a);
                 break;
         case ARAS_PLAYER_UNIT_B:
-                libvlc_media_player_stop(player->player_a);
+                libvlc_media_player_stop(player->player_b);
                 break;
         default:
                 break;
@@ -282,7 +282,7 @@ void aras_player_set_state_null(struct aras_player *player, int unit)
 }
 
 /**
- * This function sets the player state to GST_STATE_READY.
+ * This function sets the player state to stop state.
  *
  * @param   player  Pointer to the player
  * @param   unit    The identifier of the player unit
@@ -302,7 +302,7 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
 }
 
 /**
- * This function sets the player state to GST_STATE_PAUSED.
+ * This function sets the player state to pause state.
  *
  * @param   player  Pointer to the player
  * @param   unit    The identifier of the player unit
@@ -311,10 +311,10 @@ void aras_player_set_state_paused(struct aras_player *player, int unit)
 {
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
-                gst_element_set_state(player->playbin_a, GST_STATE_PAUSED);
+                libvlc_media_player_pause(player->player_a);
                 break;
         case ARAS_PLAYER_UNIT_B:
-                gst_element_set_state(player->playbin_b, GST_STATE_PAUSED);
+                libvlc_media_player_pause(player->player_b);
                 break;
         default:
                 break;
@@ -322,17 +322,13 @@ void aras_player_set_state_paused(struct aras_player *player, int unit)
 }
 
 /**
- * This function sets the player state to GST_STATE_PLAYING.
+ * This function sets the player state to play state.
  *
  * @param   player  Pointer to the player
  * @param   unit    The identifier of the player unit
  */
 void aras_player_set_state_playing(struct aras_player *player, int unit)
 {
-        GstState state;
-        GstState pending;
-        GstMessage *msg;
-
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
                 libvlc_media_player_play(player->player_a);
@@ -447,8 +443,7 @@ int aras_player_get_current_unit(struct aras_player *player)
  */
 long int aras_player_get_duration(struct aras_player *player, int unit)
 {
-        GstState state;
-        gint64 duration;
+        int64_t duration;
 
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
@@ -474,8 +469,7 @@ long int aras_player_get_duration(struct aras_player *player, int unit)
  */
 long int aras_player_get_position(struct aras_player *player, int unit)
 {
-        GstState state;
-        gint64 position;
+        int64_t position;
 
         switch (unit) {
         case ARAS_PLAYER_UNIT_A:
