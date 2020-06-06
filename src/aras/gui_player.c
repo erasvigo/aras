@@ -37,7 +37,6 @@
 #include <aras/schedule.h>
 #include <aras/block.h>
 #include <aras/engine.h>
-#include <aras/player.h>
 #include <aras/gui_player.h>
 
 /**
@@ -511,7 +510,7 @@ void aras_gui_player_update_file_next_label(struct aras_gui_player *gui, struct 
  */
 void aras_gui_player_update_file_progress_bar(struct aras_gui_player *gui, struct aras_player *player)
 {
-        libvlc_state_t state;
+        int state;
         long int duration;
         long int position;
         float fraction;
@@ -553,12 +552,13 @@ void aras_gui_player_update_file_progress_bar(struct aras_gui_player *gui, struc
                         snprintf(gui->file_progress_bar_str,
                                  sizeof(gui->file_progress_bar_str),
                                  "Connected to streaming %.2d:%.2d:%.2d", position_hours, position_minutes, position_seconds);
-                } else if (state == ARAS_PLAYER_STATE_BUFFERING) {
+                } else {
                         aras_player_get_state(player, player->current_unit, &state);
                         fraction = 0;
                         snprintf(gui->file_progress_bar_str,
                                  sizeof(gui->file_progress_bar_str),
                                  "Buffering...");
+
 
                         // /* Check if buffering */
                         // if ((player->buffer_percent_a > 0 && player->buffer_percent_a < 100) &&

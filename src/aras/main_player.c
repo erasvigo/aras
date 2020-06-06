@@ -34,7 +34,6 @@
 #include <aras/schedule.h>
 #include <aras/block.h>
 #include <aras/engine.h>
-#include <aras/player.h>
 #include <aras/gui_player.h>
 #include <aras/main_player.h>
 

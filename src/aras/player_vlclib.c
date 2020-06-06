@@ -401,23 +401,25 @@ void aras_player_get_state(struct aras_player *player, int unit, int *state)
                 vlc_state = libvlc_media_player_get_state(player->player_b);
                 break;
         default:
+                vlc_state = libvlc_media_player_get_state(player->player_a);
                 break;
         }
 
         switch (vlc_state) {
         case libvlc_Error:
-                state = ARAS_PLAYER_STATE_ERROR;
+                *state = ARAS_PLAYER_STATE_ERROR;
                 break;
         case libvlc_Ended:
-                state = ARAS_PLAYER_STATE_STOP;
+                *state = ARAS_PLAYER_STATE_STOP;
                 break;
         case libvlc_Playing:
-                state = ARAS_PLAYER_STATE_PLAYING;
+                *state = ARAS_PLAYER_STATE_PLAYING;
                 break;
         case libvlc_Buffering:
-                state = ARAS_PLAYER_STATE_BUFFERING;
+                *state = ARAS_PLAYER_STATE_BUFFERING;
                 break;
         default:
+                *state = ARAS_PLAYER_STATE_ERROR;
                 break;
         }
 }

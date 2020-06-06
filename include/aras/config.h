@@ -23,27 +23,11 @@
  *
  * @section DESCRIPTION
  *
- * Header file for the ARAS Radio Automation System. Types and definitions for
- * the main daemon module.
+ * Header file for the ARAS Radio Automation System. Headers for
+ * application wide configuration.
  */
+ 
+ #define ARAS_CONFIG_MEDIA_LIBRARY_GSTREAMER    0
+ #define ARAS_CONFIG_MEDIA_LIBRARY_VLCLIB       1
 
-#ifndef _ARAS_MAIN_DAEMON_H
-#define _ARAS_MAIN_DAEMON_H
-
-#include <aras/configuration.h>
-#include <aras/schedule.h>
-#include <aras/block.h>
-#include <aras/engine.h>
-
-struct aras_main_daemon {
-        char *configuration_file;
-        struct aras_configuration configuration;
-        struct aras_schedule schedule;
-        struct aras_block block;
-        struct aras_engine engine_block_player;
-        struct aras_engine engine_time_signal_player;
-        struct aras_player block_player;
-        struct aras_player time_signal_player;
-};
-
-#endif  /* _ARAS_MAIN_DAEMON_H */
+ #define ARAS_CONFIG_MEDIA_LIBRARY              ARAS_CONFIG_MEDIA_LIBRARY_GSTREAMER

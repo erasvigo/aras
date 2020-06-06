@@ -34,14 +34,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gst/gst.h>
-#include <vlc/vlc.h>
 
-#define ARAS_PLAYER_MAX_NAME    1024
-#define ARAS_PLAYER_MAX_URI     1024
-#define ARAS_PLAYER_MAX_DEVICE  1024
+#define ARAS_PLAYER_MAX_NAME            1024
+#define ARAS_PLAYER_MAX_URI             1024
+#define ARAS_PLAYER_MAX_DEVICE          1024
 
-#define ARAS_PLAYER_UNIT_A      0
-#define ARAS_PLAYER_UNIT_B      1
+#define ARAS_PLAYER_UNIT_A              0
+#define ARAS_PLAYER_UNIT_B              1
+
+#define ARAS_PLAYER_STATE_ERROR         0
+#define ARAS_PLAYER_STATE_BUFFERING     1
+#define ARAS_PLAYER_STATE_STOP          2
+#define ARAS_PLAYER_STATE_PLAYING       3
 
 struct aras_player_sink {
         GstElement *bin;
@@ -68,14 +72,6 @@ struct aras_player {
         struct aras_player_sink video_sink_a;
         struct aras_player_sink audio_sink_b;
         struct aras_player_sink video_sink_b;
-
-        libvlc_instance_t *instance;
-        libvlc_media_player_t *player_a;
-        libvlc_media_player_t *player_b;
-        libvlc_media_t *media_a;
-        libvlc_media_t *media_b;
-
-
 };
 
 int aras_player_init(struct aras_player *player,
@@ -100,7 +96,7 @@ void aras_player_set_state_playing(struct aras_player *player, int unit);
 void aras_player_set_current_unit(struct aras_player *player, int unit);
 void aras_player_swap_current_unit(struct aras_player *player);
 float aras_player_get_volume(struct aras_player *player, int unit);
-void aras_player_get_state(struct aras_player *player, int unit, libvlc_state_t *state);
+void aras_player_get_state(struct aras_player *player, int unit, int *state);
 int aras_player_get_buffer_percent(struct aras_player *player, int unit);
 int aras_player_get_current_unit(struct aras_player *player);
 long int aras_player_get_duration(struct aras_player *player, int unit);

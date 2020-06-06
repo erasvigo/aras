@@ -31,6 +31,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <glib.h>
+#include <aras/config.h>
 #include <aras/time.h>
 #include <aras/parse.h>
 #include <aras/log.h>
@@ -38,7 +39,11 @@
 #include <aras/configuration.h>
 #include <aras/schedule.h>
 #include <aras/block.h>
+#if (ARAS_CONFIG_MEDIA_LIBRARY == ARAS_CONFIG_MEDIA_LIBRARY_GSTREAMER)
 #include <aras/player.h>
+#elif (ARAS_CONFIG_MEDIA_LIBRARY == ARAS_CONFIG_MEDIA_LIBRARY_VLCLIB)
+#include <aras/player_vlclib.h>
+#endif
 #include <aras/engine.h>
 
 /**
@@ -352,7 +357,7 @@ void aras_engine_play_default(struct aras_engine *engine, struct aras_player *pl
 void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_player *player, struct aras_configuration *configuration, struct aras_schedule *schedule, struct aras_block *block)
 {
         char msg[ARAS_LOG_MESSAGE_MAX];
-        libvlc_state_t state;
+        int state;
         struct aras_schedule_node *current_schedule_node;
         struct aras_schedule_node *next_schedule_node;
         static int pending_playlist = 0;
@@ -453,7 +458,7 @@ void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_p
 void aras_engine_monitor_schedule_hard(struct aras_engine *engine, struct aras_player *player, struct aras_configuration *configuration, struct aras_schedule *schedule, struct aras_block *block)
 {
         char msg[ARAS_LOG_MESSAGE_MAX];
-        libvlc_state_t state;
+        int state;
         struct aras_schedule_node *current_schedule_node;
         struct aras_schedule_node *next_schedule_node;
         long duration;
@@ -588,7 +593,7 @@ void aras_engine_monitor_time_signal(struct aras_engine *engine, struct aras_pla
 {
         long int next_time_signal;
         char msg[ARAS_LOG_MESSAGE_MAX];
-        libvlc_state_t state;
+        int state;
         long duration;
         long position;
 
@@ -625,14 +630,14 @@ void aras_engine_monitor_time_signal(struct aras_engine *engine, struct aras_pla
         /* Play the next playlist node */
         aras_player_get_state(player, player->current_unit, &state);
         switch (state) {
-        case libvlc_Error:
+        case ARAS_PLAYER_STATE_ERROR:
                 aras_player_set_state_ready(player, player->current_unit);
                 aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 break;
-        case libvlc_Ended:
+        case ARAS_PLAYER_STATE_STOP:
                 aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 break;
-        case libvlc_Playing:
+        case ARAS_PLAYER_STATE_PLAYING:
                 /* If not streaming play the next playlist node */
                 if ((duration = aras_player_get_duration(player, player->current_unit)) != 0) {
                         position = aras_player_get_position(player, player->current_unit);

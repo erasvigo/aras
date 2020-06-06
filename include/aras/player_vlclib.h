@@ -27,8 +27,8 @@
  * the player module.
  */
 
-#ifndef _ARAS_PLAYER_H
-#define _ARAS_PLAYER_H
+#ifndef _ARAS_PLAYER_VLCLIB_H
+#define _ARAS_PLAYER_VLCLIB_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,4 +88,4 @@ int aras_player_get_current_unit(struct aras_player *player);
 long int aras_player_get_duration(struct aras_player *player, int unit);
 long int aras_player_get_position(struct aras_player *player, int unit);
 
-#endif  /* _ARAS_PLAYER_H */
+#endif  /* _ARAS_PLAYER_VLCLIB_H */
