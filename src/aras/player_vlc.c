@@ -92,6 +92,9 @@ int aras_player_init_block_player(struct aras_player *player, struct aras_config
         libvlc_set_fullscreen(player->player_a, true);
         libvlc_set_fullscreen(player->player_b, true);
 
+        aras_player_set_state_ready(player, ARAS_PLAYER_UNIT_A);
+        aras_player_set_state_ready(player, ARAS_PLAYER_UNIT_B);
+
         return 0;
 }
 
@@ -155,6 +158,9 @@ int aras_player_init_time_signal_player(struct aras_player *player, struct aras_
 
         libvlc_set_fullscreen(player->player_a, true);
         libvlc_set_fullscreen(player->player_b, true);
+
+        aras_player_set_state_ready(player, ARAS_PLAYER_UNIT_A);
+        aras_player_set_state_ready(player, ARAS_PLAYER_UNIT_B);
 
         return 0;
 }

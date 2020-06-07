@@ -66,7 +66,9 @@ void aras_playlist_print(GList *playlist)
  */
 GList *aras_playlist_free(GList *playlist)
 {
-        g_list_free_full(playlist, g_free);
+        if (playlist != NULL)
+                g_list_free_full(playlist, g_free);
+
         return NULL;
 }
 
