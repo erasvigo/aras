@@ -436,13 +436,14 @@ void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_p
                 /* If not streaming play the next playlist node */
                 if ((duration = aras_player_get_duration(player, player->current_unit)) != 0) {
                         position = aras_player_get_position(player, player->current_unit);
-                        if (duration - position <= configuration->fade_out_time)
+                        if (duration - position <= configuration->fade_out_time) {
                                 if (pending_playlist == 1) {
                                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_CURRENT, 0);
                                         pending_playlist = 0;
                                 } else {
                                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                                 }
+                        }
                 }
                 break;
         default:
@@ -644,11 +645,18 @@ void aras_engine_monitor_time_signal(struct aras_engine *engine, struct aras_pla
         aras_player_get_state(player, player->current_unit, &state);
         switch (state) {
         case ARAS_PLAYER_STATE_ERROR:
+                printf("ARAS_TS_PLAYER_STATE_ERROR\n");
                 aras_player_set_state_ready(player, player->current_unit);
-                aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
+                engine->playlist = aras_playlist_free(engine->playlist);
+                engine->playlist_current_node = engine->playlist;
+                //aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 break;
         case ARAS_PLAYER_STATE_STOP:
-                aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
+                printf("ARAS_TS_PLAYER_STATE_STOP\n");
+                aras_player_set_state_ready(player, player->current_unit);
+                engine->playlist = aras_playlist_free(engine->playlist);
+                engine->playlist_current_node = engine->playlist;
+                //aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 break;
         case ARAS_PLAYER_STATE_PLAYING:
                 /* If not streaming play the next playlist node */
