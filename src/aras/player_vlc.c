@@ -86,28 +86,8 @@ int aras_player_init_block_player(struct aras_player *player, struct aras_config
                 libvlc_audio_output_device_set(player->player_b, NULL, configuration->block_player_audio_device);
         }
 
-        libvlc_audio_set_format(player->player_a,
-                                "f32l",
-                                configuration->block_player_sample_rate,
-                                configuration->block_player_channels);
-        libvlc_audio_set_format(player->player_b,
-                                "f32l",
-                                configuration->block_player_sample_rate,
-                                configuration->block_player_channels);
-
         libvlc_audio_set_volume(player->player_a, (int)player->volume_a);
         libvlc_audio_set_volume(player->player_b, (int)player->volume_a);
-
-        libvlc_video_set_format(player->player_a,
-		                "RGBA",
-                                configuration->block_player_display_resolution[0],
-                                configuration->block_player_display_resolution[1],
-		                4 * configuration->time_signal_player_display_resolution[0]);
-        libvlc_video_set_format(player->player_b,
-		                "RGBA",
-                                configuration->block_player_display_resolution[0],
-                                configuration->block_player_display_resolution[1],
-		                4 * configuration->time_signal_player_display_resolution[0]);
 
         libvlc_set_fullscreen(player->player_a, true);
         libvlc_set_fullscreen(player->player_b, true);
@@ -170,28 +150,8 @@ int aras_player_init_time_signal_player(struct aras_player *player, struct aras_
                 libvlc_audio_output_device_set(player->player_b, NULL, configuration->time_signal_player_audio_device);
         }
 
-        libvlc_audio_set_format(player->player_a,
-                                "f32l",
-                                configuration->time_signal_player_sample_rate,
-                                configuration->time_signal_player_channels);
-        libvlc_audio_set_format(player->player_b,
-                                "f32l",
-                                configuration->time_signal_player_sample_rate,
-                                configuration->time_signal_player_channels);
-
         libvlc_audio_set_volume(player->player_a, (int)player->volume_a);
         libvlc_audio_set_volume(player->player_b, (int)player->volume_b);
-
-        libvlc_video_set_format(player->player_a,
-		                "RGBA",
-                                configuration->time_signal_player_display_resolution[0],
-                                configuration->time_signal_player_display_resolution[1],
-		                4 * configuration->time_signal_player_display_resolution[0]);
-        libvlc_video_set_format(player->player_b,
-		                "RGBA",
-                                configuration->time_signal_player_display_resolution[0],
-                                configuration->time_signal_player_display_resolution[1],
-		                4 * configuration->time_signal_player_display_resolution[0]);
 
         libvlc_set_fullscreen(player->player_a, true);
         libvlc_set_fullscreen(player->player_b, true);
