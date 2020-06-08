@@ -431,8 +431,8 @@ int aras_player_init_block_player(struct aras_player *player, struct aras_config
         g_object_set(player->playbin_b, "volume", player->volume_b, NULL);
 
         /* Set state to GST_STATE_NULL */
-        gst_element_set_state(player->playbin_a, GST_STATE_NULL);
-        gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+        gst_element_set_state(player->playbin_a, GST_STATE_READY);
+        gst_element_set_state(player->playbin_b, GST_STATE_READY);
         return 0;
 }
 
@@ -503,8 +503,8 @@ int aras_player_init_time_signal_player(struct aras_player *player, struct aras_
         g_object_set(player->playbin_b, "volume", player->volume_b, NULL);
 
         /* Set state to GST_STATE_NULL */
-        gst_element_set_state(player->playbin_a, GST_STATE_NULL);
-        gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+        gst_element_set_state(player->playbin_a, GST_STATE_READY);
+        gst_element_set_state(player->playbin_b, GST_STATE_READY);
 
         return 0;
 }
@@ -621,11 +621,10 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
                 case GST_STATE_CHANGE_ASYNC:
                         break;
                 case GST_STATE_CHANGE_FAILURE:
-                        fprintf(stderr, "ARAS: CRITICAL: State change to GST_STATE_READY failed\n");
-                        gst_element_set_state(player->playbin_a, GST_STATE_NULL);
+                        gst_element_set_state(player->playbin_a, GST_STATE_READY);
                         break;
                 default:
-                        gst_element_set_state(player->playbin_a, GST_STATE_NULL);
+                        gst_element_set_state(player->playbin_a, GST_STATE_READY);
                         break;
                 }
                 aras_player_message_check(player->bus_a);
@@ -642,11 +641,10 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
                 case GST_STATE_CHANGE_ASYNC:
                         break;
                 case GST_STATE_CHANGE_FAILURE:
-                        fprintf(stderr, "ARAS: CRITICAL: State change to GST_STATE_READY failed\n");
-                        gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+                        gst_element_set_state(player->playbin_b, GST_STATE_READY);
                         break;
                 default:
-                        gst_element_set_state(player->playbin_b, GST_STATE_NULL);
+                        gst_element_set_state(player->playbin_b, GST_STATE_READY);
                         break;
                 }
                 aras_player_message_check(player->bus_b);
@@ -810,10 +808,10 @@ void aras_player_get_state(struct aras_player *player, int unit, int *state)
                 *state = ARAS_PLAYER_STATE_PLAYING;
                 break;
         case GST_STATE_PAUSED:
-                *state = ARAS_PLAYER_STATE_BUFFERING;
+                *state = ARAS_PLAYER_STATE_OTHER;
                 break;
         default:
-                *state = ARAS_PLAYER_STATE_ERROR;
+                *state = ARAS_PLAYER_STATE_OTHER;
                 break;
         }
 }

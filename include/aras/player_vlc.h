@@ -46,6 +46,7 @@
 #define ARAS_PLAYER_STATE_BUFFERING     1
 #define ARAS_PLAYER_STATE_STOP          2
 #define ARAS_PLAYER_STATE_PLAYING       3
+#define ARAS_PLAYER_STATE_OTHER         4
 
 struct aras_player {
         int current_unit;

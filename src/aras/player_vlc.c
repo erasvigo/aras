@@ -388,6 +388,18 @@ void aras_player_get_state(struct aras_player *player, int unit, int *state)
         case libvlc_Ended:
                 *state = ARAS_PLAYER_STATE_STOP;
                 break;
+        case libvlc_Stopped:
+                *state = ARAS_PLAYER_STATE_STOP;
+                break;
+        case libvlc_Paused:
+                *state = ARAS_PLAYER_STATE_OTHER;
+                break;
+        case libvlc_Opening:
+                *state = ARAS_PLAYER_STATE_OTHER;
+                break;
+        case libvlc_NothingSpecial:
+                *state = ARAS_PLAYER_STATE_OTHER;
+                break;
         case libvlc_Playing:
                 *state = ARAS_PLAYER_STATE_PLAYING;
                 break;
@@ -395,7 +407,7 @@ void aras_player_get_state(struct aras_player *player, int unit, int *state)
                 *state = ARAS_PLAYER_STATE_BUFFERING;
                 break;
         default:
-                *state = ARAS_PLAYER_STATE_ERROR;
+                *state = ARAS_PLAYER_STATE_OTHER;
                 break;
         }
 }

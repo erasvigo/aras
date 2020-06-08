@@ -58,6 +58,7 @@ struct aras_engine {
         long int state_time_maximum;
         GList *playlist;
         GList *playlist_current_node;
+        int pending_playlist;
 };
 
 int aras_engine_init(struct aras_engine *engine);
