@@ -621,10 +621,10 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
                 case GST_STATE_CHANGE_ASYNC:
                         break;
                 case GST_STATE_CHANGE_FAILURE:
-                        gst_element_set_state(player->playbin_a, GST_STATE_READY);
+                        gst_element_set_state(player->playbin_a, GST_STATE_NULL);
                         break;
                 default:
-                        gst_element_set_state(player->playbin_a, GST_STATE_READY);
+                        gst_element_set_state(player->playbin_a, GST_STATE_NULL);
                         break;
                 }
                 aras_player_message_check(player->bus_a);
@@ -641,10 +641,10 @@ void aras_player_set_state_ready(struct aras_player *player, int unit)
                 case GST_STATE_CHANGE_ASYNC:
                         break;
                 case GST_STATE_CHANGE_FAILURE:
-                        gst_element_set_state(player->playbin_b, GST_STATE_READY);
+                        gst_element_set_state(player->playbin_b, GST_STATE_NULL);
                         break;
                 default:
-                        gst_element_set_state(player->playbin_b, GST_STATE_READY);
+                        gst_element_set_state(player->playbin_b, GST_STATE_NULL);
                         break;
                 }
                 aras_player_message_check(player->bus_b);

@@ -192,7 +192,7 @@ GList *aras_playlist_load_directory(GList *playlist, char *data, int recursion)
         GDir *dir;
         const char *entry;
         char *path;
-        char *node;
+        char *node = NULL;
 
         /* If recursion is too deep, return the playlist itself */
         if (recursion >= ARAS_PLAYLIST_MAX_RECURSION_DEPTH) {

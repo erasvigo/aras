@@ -198,6 +198,8 @@ void aras_engine_play_current(struct aras_engine *engine, struct aras_player *pl
 
         /* Swap unit and play current node */
         aras_player_swap_current_unit(player);
+        aras_player_set_state_null(player, player->current_unit);
+        aras_player_set_state_ready(player, player->current_unit);
         aras_player_set_volume(player, player->current_unit, 0);
         aras_player_set_uri(player, player->current_unit, engine->playlist_current_node->data);
         aras_player_set_state_playing(player, player->current_unit);
@@ -283,11 +285,9 @@ void aras_engine_play_next(struct aras_engine *engine, struct aras_player *playe
         char msg[ARAS_LOG_MESSAGE_MAX];
 
         if (engine->playlist_current_node == NULL) {
+                engine->playlist = aras_playlist_free(engine->playlist);
                 aras_engine_set_state(engine, ARAS_ENGINE_STATE_NULL, 0);
-                return;
-        }
-
-        if ((engine->playlist_current_node = engine->playlist_current_node->next) == NULL) {
+        } else if ((engine->playlist_current_node = engine->playlist_current_node->next) == NULL) {
                 /* Free playlist */
                 engine->playlist = aras_playlist_free(engine->playlist);
                 /* Check is default block is enabled */
@@ -344,14 +344,19 @@ void aras_engine_play_default(struct aras_engine *engine, struct aras_player *pl
         engine->playlist_current_node = engine->playlist;
 }
 
-void aras_engine_playlist_watch(struct aras_engine *engine, struct aras_configuration *configuration, struct aras_schedule *schedule, struct aras_block *block)
+long aras_engine_playlist_watch(struct aras_engine *engine, struct aras_configuration *configuration, struct aras_schedule *schedule, struct aras_block *block)
 {
         char msg[ARAS_LOG_MESSAGE_MAX];
         struct aras_schedule_node *current_schedule_node;
+        struct aras_schedule_node *next_schedule_node;
 
         /* If current schedule node not present, do nothing */
         if ((current_schedule_node = aras_schedule_seek_node_current(schedule, aras_time_current())) == NULL)
-                return;
+                return -1;
+
+        /* If next schedule node not present, do nothing */
+        if ((next_schedule_node = aras_schedule_seek_node_next(schedule, aras_time_current())) == NULL)
+                return -1;
 
         /* If a new schedule node is reached, load the appropriate playlist and notify pending playlist */
         if (aras_time_reached(aras_time_current(), current_schedule_node->time, configuration->engine_period)) {
@@ -375,6 +380,7 @@ void aras_engine_playlist_watch(struct aras_engine *engine, struct aras_configur
                         }
                 }
         }
+        return aras_time_difference(next_schedule_node->time, aras_time_current());
 }
 
 /**
@@ -394,6 +400,7 @@ void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_p
         int state;
         //struct aras_schedule_node *current_schedule_node;
         //struct aras_schedule_node *next_schedule_node;
+        long next_block_time;
         long duration;
         long position;
 
@@ -434,7 +441,7 @@ void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_p
         //         return;
         // }
 
-        aras_engine_playlist_watch(engine, configuration, schedule, block);
+        next_block_time = aras_engine_playlist_watch(engine, configuration, schedule, block);
 
         /* If no files to play, do nothing */
         if (engine->playlist_current_node == NULL)
@@ -447,17 +454,22 @@ void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_p
                 snprintf(msg, sizeof(msg),"ARAS engine: player error\n");
                 aras_log_write(configuration->log_file, msg);
 
-                // snprintf(msg, sizeof(msg),"ARAS engine: player error\n");
-                // aras_log_write(configuration->log_file, msg);
-                // aras_player_set_state_null(player, player->current_unit);
                 if (engine->pending_playlist == 1) {
-                        snprintf(msg, sizeof(msg),"ARAS engine: start pending playlist\n");
+                        snprintf(msg, sizeof(msg),"ARAS engine: pending playlist: recover procedure\n");
                         aras_log_write(configuration->log_file, msg);
+                        aras_player_set_state_null(player, player->current_unit);
+                        aras_player_set_state_ready(player, player->current_unit);
+                        //engine->playlist = aras_playlist_free(engine->playlist);
+                        //engine->playlist_current_node = engine->playlist;
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_CURRENT, 0);
                         engine->pending_playlist = 0;
                 } else {
-                        snprintf(msg, sizeof(msg),"ARAS engine: continue current playlist\n");
+                        snprintf(msg, sizeof(msg),"ARAS engine: no pending playlist: recover procedure\n");
                         aras_log_write(configuration->log_file, msg);
+                        aras_player_set_state_null(player, player->current_unit);
+                        aras_player_set_state_ready(player, player->current_unit);
+                        //engine->playlist = aras_playlist_free(engine->playlist);
+                        //engine->playlist_current_node = engine->playlist;
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 }
                 break;
@@ -510,8 +522,9 @@ void aras_engine_monitor_schedule_hard(struct aras_engine *engine, struct aras_p
 {
         char msg[ARAS_LOG_MESSAGE_MAX];
         int state;
-        struct aras_schedule_node *current_schedule_node;
-        struct aras_schedule_node *next_schedule_node;
+        //struct aras_schedule_node *current_schedule_node;
+        //struct aras_schedule_node *next_schedule_node;
+        long next_block_time;
         long duration;
         long position;
 
@@ -552,7 +565,7 @@ void aras_engine_monitor_schedule_hard(struct aras_engine *engine, struct aras_p
         //         return;
         // }
 
-        aras_engine_playlist_watch(engine, configuration, schedule, block);
+        next_block_time = aras_engine_playlist_watch(engine, configuration, schedule, block);
 
         /* If no files to play, do nothing */
         if (engine->playlist_current_node == NULL)
@@ -561,25 +574,66 @@ void aras_engine_monitor_schedule_hard(struct aras_engine *engine, struct aras_p
         aras_player_get_state(player, player->current_unit, &state);
         switch (state) {
         case ARAS_PLAYER_STATE_ERROR:
+
+                snprintf(msg, sizeof(msg),"ARAS engine: player error\n");
+                aras_log_write(configuration->log_file, msg);
+
                 if (engine->pending_playlist == 1) {
-                        snprintf(msg, sizeof(msg),"ARAS engine: start pending playlist\n");
+                        snprintf(msg, sizeof(msg),"ARAS engine: pending playlist: recover procedure\n");
                         aras_log_write(configuration->log_file, msg);
+                        aras_player_set_state_null(player, player->current_unit);
+                        aras_player_set_state_ready(player, player->current_unit);
+                        //engine->playlist = aras_playlist_free(engine->playlist);
+                        //engine->playlist_current_node = engine->playlist;
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_CURRENT, 0);
                         engine->pending_playlist = 0;
                 } else {
-                        snprintf(msg, sizeof(msg),"ARAS engine: continue current playlist\n");
+                        snprintf(msg, sizeof(msg),"ARAS engine: no pending playlist: recover procedure\n");
                         aras_log_write(configuration->log_file, msg);
+                        aras_player_set_state_null(player, player->current_unit);
+                        aras_player_set_state_ready(player, player->current_unit);
+                        //engine->playlist = aras_playlist_free(engine->playlist);
+                        //engine->playlist_current_node = engine->playlist;
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 }
+
+                //aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
+
+                // if (engine->pending_playlist == 1) {
+                //         snprintf(msg, sizeof(msg),"ARAS engine: pending playlist: reset player and free playlist\n");
+                //         aras_log_write(configuration->log_file, msg);
+
+                //         aras_player_set_state_null(player, player->current_unit);
+
+                //         engine->playlist = aras_playlist_free(engine->playlist);
+                //         engine->playlist_current_node = engine->playlist;
+
+                //         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
+                //         engine->pending_playlist = 0;
+                // } else {
+                //         snprintf(msg, sizeof(msg),"ARAS engine: no pending playlist: reset player and free playlist\n");
+                //         aras_log_write(configuration->log_file, msg);
+
+                //         aras_player_set_state_null(player, player->current_unit);
+
+                //         engine->playlist = aras_playlist_free(engine->playlist);
+                //         engine->playlist_current_node = engine->playlist;
+
+                //         aras_engine_set_state(engine, ARAS_ENGINE_STATE_NULL, 0);
+                // }
                 break;
         case ARAS_PLAYER_STATE_STOP:
                 if (engine->pending_playlist == 1) {
                         snprintf(msg, sizeof(msg),"ARAS engine: start pending playlist\n");
                         aras_log_write(configuration->log_file, msg);
+                        aras_player_set_state_null(player, player->current_unit);
+                        aras_player_set_state_ready(player, player->current_unit);
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_CURRENT, 0);
                         engine->pending_playlist = 0;
                 } else {
                         snprintf(msg, sizeof(msg),"ARAS engine: continue current playlist\n");
+                        aras_player_set_state_null(player, player->current_unit);
+                        aras_player_set_state_ready(player, player->current_unit);
                         aras_log_write(configuration->log_file, msg);
                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 }
@@ -705,20 +759,20 @@ void aras_engine_monitor_time_signal(struct aras_engine *engine, struct aras_pla
         aras_player_get_state(player, player->current_unit, &state);
         switch (state) {
         case ARAS_PLAYER_STATE_ERROR:
-                snprintf(msg, sizeof(msg),"ARAS engine: player error\n");
+                snprintf(msg, sizeof(msg),"ARAS TS engine: player error\n");
                 aras_log_write(configuration->log_file, msg);
+                aras_player_set_state_null(player, player->current_unit);
                 aras_player_set_state_ready(player, player->current_unit);
-                engine->playlist = aras_playlist_free(engine->playlist);
-                engine->playlist_current_node = engine->playlist;
-                //aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
+                //engine->playlist = aras_playlist_free(engine->playlist);
+                //engine->playlist_current_node = engine->playlist;
+                aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 break;
         case ARAS_PLAYER_STATE_STOP:
-                snprintf(msg, sizeof(msg),"ARAS engine: player stopped\n");
+                snprintf(msg, sizeof(msg),"ARAS TS engine: player stopped\n");
                 aras_log_write(configuration->log_file, msg);
+                aras_player_set_state_null(player, player->current_unit);
                 aras_player_set_state_ready(player, player->current_unit);
-                engine->playlist = aras_playlist_free(engine->playlist);
-                engine->playlist_current_node = engine->playlist;
-                //aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
+                aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                 break;
         case ARAS_PLAYER_STATE_PLAYING:
                 /* If not streaming play the next playlist node */
