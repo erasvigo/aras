@@ -232,7 +232,7 @@ void aras_configuration_set_block_player_audio_output(struct aras_configuration 
 {
         if (!strcasecmp(argument, "auto"))
                 configuration->block_player_audio_output = ARAS_CONFIGURATION_MODE_AUDIO_AUTO;
-        else if (!strcasecmp(argument, "pulseaudio"))
+        else if (!strcasecmp(argument, "pulseaudio") || !strcasecmp(argument, "pulse"))
                 configuration->block_player_audio_output = ARAS_CONFIGURATION_MODE_AUDIO_PULSEAUDIO;
         else if (!strcasecmp(argument, "alsa"))
                 configuration->block_player_audio_output = ARAS_CONFIGURATION_MODE_AUDIO_ALSA;

@@ -30,6 +30,12 @@ player:
 recorder:
 	cd src/aras && make recorder
 
+daemon-vlc:
+	cd src/aras && make daemon-vlc
+
+player-vlc:
+	cd src/aras && make player-vlc
+
 .PHONY: clean
 clean:
 	cd src/aras && make clean

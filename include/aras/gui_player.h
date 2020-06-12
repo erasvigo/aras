@@ -34,7 +34,6 @@
 #include <aras/configuration.h>
 #include <aras/schedule.h>
 #include <aras/block.h>
-#include <aras/player.h>
 #include <aras/engine.h>
 
 #define ARAS_GUI_PLAYER_PATH_ICON       "/usr/share/aras/icons/aras-player-icon.png"

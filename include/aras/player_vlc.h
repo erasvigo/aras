@@ -27,13 +27,13 @@
  * the player module.
  */
 
-#ifndef _ARAS_PLAYER_H
-#define _ARAS_PLAYER_H
+#ifndef _ARAS_PLAYER_VLCLIB_H
+#define _ARAS_PLAYER_VLCLIB_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <gst/gst.h>
+#include <vlc/vlc.h>
 
 #define ARAS_PLAYER_MAX_NAME            1024
 #define ARAS_PLAYER_MAX_URI             1024
@@ -48,31 +48,17 @@
 #define ARAS_PLAYER_STATE_PLAYING       3
 #define ARAS_PLAYER_STATE_OTHER         4
 
-struct aras_player_sink {
-        GstElement *bin;
-        GstElement *convert;
-        GstElement *sink;
-        GstCaps *caps;
-        GstPad *pad;
-        GstPad *ghost_pad;
-};
-
 struct aras_player {
         int current_unit;
-        char uri_a[ARAS_PLAYER_MAX_URI];
-        char uri_b[ARAS_PLAYER_MAX_URI];
         float volume_a;
         float volume_b;
-        GstElement *playbin_a;
-        GstElement *playbin_b;
-        GstBus *bus_a;
-        GstBus *bus_b;
         int buffer_percent_a;
         int buffer_percent_b;
-        struct aras_player_sink audio_sink_a;
-        struct aras_player_sink video_sink_a;
-        struct aras_player_sink audio_sink_b;
-        struct aras_player_sink video_sink_b;
+        libvlc_instance_t *instance;
+        libvlc_media_player_t *player_a;
+        libvlc_media_player_t *player_b;
+        libvlc_media_t *media_a;
+        libvlc_media_t *media_b;
 };
 
 int aras_player_init(struct aras_player *player,
@@ -89,7 +75,7 @@ int aras_player_init_block_player(struct aras_player *player, struct aras_config
 int aras_player_init_time_signal_player(struct aras_player *player, struct aras_configuration *configuration);
 void aras_player_set_volume(struct aras_player *player, int unit, float volume);
 void aras_player_set_volume_increment(struct aras_player *player, int unit, float slope, float limit);
-void aras_player_set_uri(struct aras_player *player, int unit, gchar *uri);
+void aras_player_set_uri(struct aras_player *player, int unit, char *uri);
 void aras_player_set_state_null(struct aras_player *player, int unit);
 void aras_player_set_state_ready(struct aras_player *player, int unit);
 void aras_player_set_state_paused(struct aras_player *player, int unit);
@@ -103,4 +89,4 @@ int aras_player_get_current_unit(struct aras_player *player);
 long int aras_player_get_duration(struct aras_player *player, int unit);
 long int aras_player_get_position(struct aras_player *player, int unit);
 
-#endif  /* _ARAS_PLAYER_H */
+#endif  /* _ARAS_PLAYER_VLCLIB_H */

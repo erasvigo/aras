@@ -34,7 +34,6 @@
 #include <aras/schedule.h>
 #include <aras/block.h>
 #include <aras/engine.h>
-#include <aras/player.h>
 #include <aras/main_daemon.h>
 
 /**
@@ -138,8 +137,7 @@ int aras_main_daemon_init(struct aras_main_daemon *main_daemon)
                 return -1;
         }
 
-        /* Initialize GStreamer and players */
-        gst_init(NULL, NULL);
+        /* Initialize players */
         aras_player_init_block_player(&main_daemon->block_player, &main_daemon->configuration);
         aras_player_init_time_signal_player(&main_daemon->time_signal_player, &main_daemon->configuration);
 
