@@ -698,7 +698,6 @@ void aras_player_set_state_playing(struct aras_player *player, int unit)
                 case GST_STATE_CHANGE_ASYNC:
                         break;
                 case GST_STATE_CHANGE_FAILURE:
-                        fprintf(stderr, "ARAS: CRITICAL: State change to GST_STATE_PLAYING failed\n");
                         gst_element_set_state(player->playbin_a, GST_STATE_NULL);
                         break;
                 default:
@@ -719,7 +718,6 @@ void aras_player_set_state_playing(struct aras_player *player, int unit)
                 case GST_STATE_CHANGE_ASYNC:
                         break;
                 case GST_STATE_CHANGE_FAILURE:
-                        fprintf(stderr, "ARAS: CRITICAL: State change to GST_STATE_PLAYING failed\n");
                         gst_element_set_state(player->playbin_b, GST_STATE_NULL);
                         break;
                 default:

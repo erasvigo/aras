@@ -87,7 +87,7 @@ int aras_player_init_block_player(struct aras_player *player, struct aras_config
         }
 
         libvlc_audio_set_volume(player->player_a, (int)player->volume_a);
-        libvlc_audio_set_volume(player->player_b, (int)player->volume_a);
+        libvlc_audio_set_volume(player->player_b, (int)player->volume_b);
 
         libvlc_set_fullscreen(player->player_a, true);
         libvlc_set_fullscreen(player->player_b, true);
