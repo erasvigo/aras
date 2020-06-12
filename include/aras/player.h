@@ -1,12 +1,12 @@
 /**
  * @file
  * @author  Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
- * @version 4.5
+ * @version 4.6
  *
  * @section LICENSE
  *
  * The ARAS Radio Automation System
- * Copyright (C) 2018  Erasmo Alonso Iglesias
+ * Copyright (C) 2020  Erasmo Alonso Iglesias
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,12 +35,27 @@
 #include <string.h>
 #include <gst/gst.h>
 
-#define ARAS_PLAYER_MAX_NAME    1024
-#define ARAS_PLAYER_MAX_URI     1024
-#define ARAS_PLAYER_MAX_DEVICE  1024
+#define ARAS_PLAYER_MAX_NAME            1024
+#define ARAS_PLAYER_MAX_URI             1024
+#define ARAS_PLAYER_MAX_DEVICE          1024
 
-#define ARAS_PLAYER_UNIT_A      0
-#define ARAS_PLAYER_UNIT_B      1
+#define ARAS_PLAYER_UNIT_A              0
+#define ARAS_PLAYER_UNIT_B              1
+
+#define ARAS_PLAYER_STATE_ERROR         0
+#define ARAS_PLAYER_STATE_BUFFERING     1
+#define ARAS_PLAYER_STATE_STOP          2
+#define ARAS_PLAYER_STATE_PLAYING       3
+#define ARAS_PLAYER_STATE_OTHER         4
+
+struct aras_player_sink {
+        GstElement *bin;
+        GstElement *convert;
+        GstElement *sink;
+        GstCaps *caps;
+        GstPad *pad;
+        GstPad *ghost_pad;
+};
 
 struct aras_player {
         int current_unit;
@@ -48,23 +63,16 @@ struct aras_player {
         char uri_b[ARAS_PLAYER_MAX_URI];
         float volume_a;
         float volume_b;
-        char name[ARAS_PLAYER_MAX_NAME];
-        int audio_output;
-        char audio_device[ARAS_PLAYER_MAX_DEVICE];
-        int video_output;
-        char video_device[ARAS_PLAYER_MAX_DEVICE];
-        int sample_rate;
-        int channels;
         GstElement *playbin_a;
         GstElement *playbin_b;
         GstBus *bus_a;
         GstBus *bus_b;
         int buffer_percent_a;
         int buffer_percent_b;
-        GstElement *audio_sink_bin_a;
-        GstElement *audio_sink_bin_b;
-        GstElement *video_sink_bin_a;
-        GstElement *video_sink_bin_b;
+        struct aras_player_sink audio_sink_a;
+        struct aras_player_sink video_sink_a;
+        struct aras_player_sink audio_sink_b;
+        struct aras_player_sink video_sink_b;
 };
 
 int aras_player_init(struct aras_player *player,
@@ -89,7 +97,7 @@ void aras_player_set_state_playing(struct aras_player *player, int unit);
 void aras_player_set_current_unit(struct aras_player *player, int unit);
 void aras_player_swap_current_unit(struct aras_player *player);
 float aras_player_get_volume(struct aras_player *player, int unit);
-void aras_player_get_state(struct aras_player *player, int unit, GstState *state);
+void aras_player_get_state(struct aras_player *player, int unit, int *state);
 int aras_player_get_buffer_percent(struct aras_player *player, int unit);
 int aras_player_get_current_unit(struct aras_player *player);
 long int aras_player_get_duration(struct aras_player *player, int unit);

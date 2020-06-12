@@ -1,0 +1,5 @@
+*
+!.gitignore
+!aras-daemon.sh
+!aras-player.sh
+!aras-recorder.sh

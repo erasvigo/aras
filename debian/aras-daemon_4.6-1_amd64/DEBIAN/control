@@ -1,14 +1,15 @@
-Package: aras-recorder
-Version: 4.5-1
+Package: aras-daemon
+Source: aras
+Version: 4.6-1
 Architecture: amd64
-Maintainer: Erasmo ALonso Iglesias <erasmo1982@users.sourceforge.net>
+Maintainer: Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
 Installed-Size: 90
-Depends: libatk1.0-0 (>= 1.20.0), libc6 (>= 2.7-1), libcairo2 (>= 1.2.4), libglib2.0-0 (>= 2.12.0), libgstreamer1.0-0 (>= 1.0.0), libgtk-3-0 (>= 3.18.9), libpango1.0-0 (>= 1.20.3), libxml2 (>= 2.6.27), aras-common, gstreamer1.0-plugins-base, gstreamer1.0-plugins-good, gstreamer1.0-plugins-ugly
+Depends: libc6 (>= 2.7-1), libglib2.0-0 (>= 2.12.0), libgstreamer1.0-0 (>= 1.0.0), libxml2 (>= 2.6.27), aras-common, gstreamer1.0-plugins-base, gstreamer1.0-plugins-good, gstreamer1.0-plugins-ugly
 Recommends: logrotate
 Section: sound
 Priority: optional
 Homepage: http://aras.sourceforge.net/
-Description: A Radio Automation System - graphical player and recorder
+Description: A Radio Automation System - daemon
  ARAS is a suite of programs for a radio automation system.
  Some ARAS features are:
  * It reads a large number of media formats.
@@ -17,7 +18,7 @@ Description: A Radio Automation System - graphical player and recorder
  * Log file capability.
  * Time signal capability.
  * Interval signal capability.
- * It works with single file, random files and playlist blocks.
+ * It works with single file blocks, playlist blocks, blocks of random files, blocks of one random file and interleaved blocks.
  * Fade out capability.
  .
  There are 4 Debian packages from ARAS: aras-common, aras-daemon, aras-player and aras-recorder.
@@ -29,4 +30,4 @@ Description: A Radio Automation System - graphical player and recorder
  we can't avoid them.
  .
  See more info about how to configure the suite in the file:
- /usr/share/doc/aras/README.Debian
+ /usr/share/doc/aras-daemon/README.Debian

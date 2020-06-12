@@ -1,12 +1,12 @@
 /**
  * @file
  * @author  Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
- * @version 4.5
+ * @version 4.6
  *
  * @section LICENSE
  *
  * The ARAS Radio Automation System
- * Copyright (C) 2018  Erasmo Alonso Iglesias
+ * Copyright (C) 2020  Erasmo Alonso Iglesias
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,10 +31,15 @@
 #define _ARAS_ENGINE_H
 
 #include <glib.h>
+#include <aras/config.h>
 #include <aras/configuration.h>
 #include <aras/schedule.h>
 #include <aras/block.h>
+#if (ARAS_CONFIG_MEDIA_LIBRARY == ARAS_CONFIG_MEDIA_LIBRARY_GST)
 #include <aras/player.h>
+#elif (ARAS_CONFIG_MEDIA_LIBRARY == ARAS_CONFIG_MEDIA_LIBRARY_VLC)
+#include <aras/player_vlc.h>
+#endif
 
 #define ARAS_ENGINE_STATE_NULL                  0
 #define ARAS_ENGINE_STATE_MONITOR_SCHEDULE_HARD 1
@@ -53,6 +58,7 @@ struct aras_engine {
         long int state_time_maximum;
         GList *playlist;
         GList *playlist_current_node;
+        int pending_playlist;
 };
 
 int aras_engine_init(struct aras_engine *engine);

@@ -1,12 +1,12 @@
 /**
  * @file
  * @author  Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
- * @version 4.5
+ * @version 4.6
  *
  * @section LICENSE
  *
  * The ARAS Radio Automation System
- * Copyright (C) 2018  Erasmo Alonso Iglesias
+ * Copyright (C) 2020  Erasmo Alonso Iglesias
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,7 +66,9 @@ void aras_playlist_print(GList *playlist)
  */
 GList *aras_playlist_free(GList *playlist)
 {
-        g_list_free_full(playlist, g_free);
+        if (playlist != NULL)
+                g_list_free_full(playlist, g_free);
+
         return NULL;
 }
 
@@ -190,7 +192,7 @@ GList *aras_playlist_load_directory(GList *playlist, char *data, int recursion)
         GDir *dir;
         const char *entry;
         char *path;
-        char *node;
+        char *node = NULL;
 
         /* If recursion is too deep, return the playlist itself */
         if (recursion >= ARAS_PLAYLIST_MAX_RECURSION_DEPTH) {

@@ -7,7 +7,7 @@
 # 1 Default block #
 ###################
 
-default         file        http://s1.streamaudio.de:8000/radio-piratona
+default         file        http://stream.streamaudio.de:8000/radio-piratona.ogg
 
 #######################
 # 2 Time signal block #

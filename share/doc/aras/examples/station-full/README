@@ -1,0 +1,11 @@
+
+Advanced station example
+------------------------
+
+This directory contains the required files for running a full featured radio
+station.
+
+It uses the ARAS radio automation system player aras-player, the ARAS radio
+automation system recorder aras-recorder, the JACK audio server daemon jackd,
+the effect rack calfjackhost, the media converter ffmpeg, the broadcast
+streaming client ices2 and the JACK port connection manager jack-plumbing.

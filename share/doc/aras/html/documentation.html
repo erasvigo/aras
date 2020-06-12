@@ -166,11 +166,11 @@
                                 <ol>
                                         <li>Run <a href="http://qjackctl.sourceforge.net/">QjackCtl</a> with a proper <a href="http://aras.sourceforge.net/files/patchbay.xml">patchbay</a> profile.</li>
                                         <li>
-                                                Run <a href="http://rd.slavepianos.org/?t=rju">jack.plumbing</a> with a proper <a href=http://aras.sourceforge.net/files/rule-file>rule file</a>. In this case, be careful with the elapsed time to ensure patchbay is updated correctly.
+                                                Run <a href="http://rd.slavepianos.org/?t=rju">jack-plumbing</a> with a proper <a href=http://aras.sourceforge.net/files/rule-file>rule file</a>. In this case, be careful with the elapsed time to ensure patchbay is updated correctly.
 
                                                 <p>
                                                         <code>
-                                                                $ jack.plumbing -q -u 100000 <a href=files/rule-file>rule-file</a>
+                                                                $ jack-plumbing -q -u 100000 <a href=files/rule-file>rule-file</a>
                                                         </code>
                                                 </p>
 
@@ -186,7 +186,7 @@
                                                 $ /usr/bin/jackd -dalsa -dhw:0 -r48000 -p1024 -n2 1> /dev/null 2> /dev/null &<br>
                                                 $ aras-daemon /etc/aras/<a href="files/aras.conf">aras.conf</a> > /dev/null &<br>
                                                 $ calfjackhost --load <a href="files/session">session</a> > /dev/null &<br>
-                                                $ jack.plumbing -q -u 100000 <a href="files/rule-file">rule-file</a> 2> /dev/null<br>
+                                                $ jack-plumbing -q -u 100000 <a href="files/rule-file">rule-file</a> 2> /dev/null<br>
                                         </code>
                                 </p>
                         </p>
@@ -204,12 +204,12 @@
                                         <code>
                                                 $ icecast2 -c <a href="files/icecast.xml">icecast.xml</a> & <br>
                                                 $ aras-player /etc/aras/<a href="files/aras.conf">aras.conf</a> & <br>
-                                                $ avconv -f jack -i avconv -y -f s16le - 2>/dev/null | ices2 <a href="files/ices-stdinpcm.xml">ices-stdinpcm.xml</a>
+                                                $ ffmpeg -f jack -i ffmpeg -y -f s16le - 2>/dev/null | ices2 <a href="files/ices-stdinpcm.xml">ices-stdinpcm.xml</a>
                                         </code>
                                 </p>
 
                                 <p>
-                                        Customize your configuration files and configure your JACK patchbay to feed avconv properly.
+                                        Customize your configuration files and configure your JACK patchbay to feed ffmpeg properly.
                                 </p>
                         </p>
 

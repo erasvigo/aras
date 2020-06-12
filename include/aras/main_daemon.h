@@ -1,12 +1,12 @@
 /**
  * @file
  * @author  Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
- * @version 4.5
+ * @version 4.6
  *
  * @section LICENSE
  *
  * The ARAS Radio Automation System
- * Copyright (C) 2018  Erasmo Alonso Iglesias
+ * Copyright (C) 2020  Erasmo Alonso Iglesias
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@
 #include <aras/schedule.h>
 #include <aras/block.h>
 #include <aras/engine.h>
-#include <aras/player.h>
 
 struct aras_main_daemon {
         char *configuration_file;

@@ -1,7 +1,7 @@
 # Makefile for the ARAS Radio Automation System
 
 PACKAGE      = aras
-VERSION      = 4.5
+VERSION      = 4.6
 DISTDIR  = ..
 DISTFILE = $(PACKAGE)-$(VERSION)
 
@@ -29,6 +29,12 @@ player:
 
 recorder:
 	cd src/aras && make recorder
+
+daemon-vlc:
+	cd src/aras && make daemon-vlc
+
+player-vlc:
+	cd src/aras && make player-vlc
 
 .PHONY: clean
 clean:

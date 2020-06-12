@@ -1,12 +1,12 @@
 /**
  * @file
  * @author  Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
- * @version 4.5
+ * @version 4.6
  *
  * @section LICENSE
  *
  * The ARAS Radio Automation System
- * Copyright (C) 2018  Erasmo Alonso Iglesias
+ * Copyright (C) 2020  Erasmo Alonso Iglesias
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -232,7 +232,7 @@ void aras_configuration_set_block_player_audio_output(struct aras_configuration 
 {
         if (!strcasecmp(argument, "auto"))
                 configuration->block_player_audio_output = ARAS_CONFIGURATION_MODE_AUDIO_AUTO;
-        else if (!strcasecmp(argument, "pulseaudio"))
+        else if (!strcasecmp(argument, "pulseaudio") || !strcasecmp(argument, "pulse"))
                 configuration->block_player_audio_output = ARAS_CONFIGURATION_MODE_AUDIO_PULSEAUDIO;
         else if (!strcasecmp(argument, "alsa"))
                 configuration->block_player_audio_output = ARAS_CONFIGURATION_MODE_AUDIO_ALSA;
