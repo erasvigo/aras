@@ -15,12 +15,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-2020-05-22  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
+2020-06-12  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
 
 	* ARAS-4.6 released
 	- Fixed bug causing state transition failure
 	- Clean up code
 	- Created build directory
+	- Add libVLC option
 
 2018-02-24  Erasmo Alonso Iglesias  <erasmo1982@users.sourceforge.net>
 
