@@ -555,13 +555,12 @@ void aras_engine_schedule(struct aras_engine *engine, struct aras_player *player
 {
         char msg[ARAS_LOG_MESSAGE_MAX];
 
-        switch (engine->state) {
-        case ARAS_ENGINE_STATE_MONITOR_SCHEDULE_HARD:
+        if (configuration->schedule_mode == ARAS_CONFIGURATION_MODE_SCHEDULE_HARD)
                 aras_engine_monitor_schedule_hard(engine, player, configuration, schedule, block);
-                break;
-        case ARAS_ENGINE_STATE_MONITOR_SCHEDULE_SOFT:
+        else
                 aras_engine_monitor_schedule_soft(engine, player, configuration, schedule, block);
-                break;
+
+        switch (engine->state) {
         case ARAS_ENGINE_STATE_PLAY_PREVIOUS:
                 aras_engine_play_previous(engine, player, configuration->default_block_mode, configuration->default_block, block, configuration->fade_out_time, configuration->log_file);
                 break;
@@ -581,10 +580,6 @@ void aras_engine_schedule(struct aras_engine *engine, struct aras_player *player
                 aras_engine_fade_out(engine, player, configuration->fade_out_slope, configuration->engine_period);
                 break;
         default:
-                if (configuration->schedule_mode == ARAS_CONFIGURATION_MODE_SCHEDULE_HARD)
-                        aras_engine_set_state(engine, ARAS_ENGINE_STATE_MONITOR_SCHEDULE_HARD, 0);
-                else
-                        aras_engine_set_state(engine, ARAS_ENGINE_STATE_MONITOR_SCHEDULE_SOFT, 0);
                 break;
         }
 }

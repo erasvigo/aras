@@ -198,7 +198,7 @@ void aras_gui_player_callback_status_icon_menu(GtkStatusIcon *status_icon, guint
  */
 void aras_gui_player_callback_button_backward(GtkWidget *widget, struct aras_gui_player_callback *data)
 {
-        if (data->engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_HARD || data->engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_SOFT)
+        if (data->engine->state == ARAS_ENGINE_STATE_NULL)
                 aras_engine_set_state(data->engine, ARAS_ENGINE_STATE_PLAY_PREVIOUS, data->configuration->fade_out_time);
 }
 
@@ -213,7 +213,7 @@ void aras_gui_player_callback_button_backward(GtkWidget *widget, struct aras_gui
  */
 void aras_gui_player_callback_button_repeat(GtkWidget *widget, struct aras_gui_player_callback *data)
 {
-        if (data->engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_HARD || data->engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_SOFT)
+        if (data->engine->state == ARAS_ENGINE_STATE_NULL)
                 aras_engine_set_state(data->engine, ARAS_ENGINE_STATE_PLAY_CURRENT, data->configuration->fade_out_time);
 }
 
@@ -228,7 +228,7 @@ void aras_gui_player_callback_button_repeat(GtkWidget *widget, struct aras_gui_p
  */
 void aras_gui_player_callback_button_forward(GtkWidget *widget, struct aras_gui_player_callback *data)
 {
-        if (data->engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_HARD || data->engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_SOFT)
+        if (data->engine->state == ARAS_ENGINE_STATE_NULL)
                 aras_engine_set_state(data->engine, ARAS_ENGINE_STATE_PLAY_NEXT, data->configuration->fade_out_time);
 }
 
@@ -243,7 +243,7 @@ void aras_gui_player_callback_button_forward(GtkWidget *widget, struct aras_gui_
  */
 void aras_gui_player_callback_button_eject(GtkWidget *widget, struct aras_gui_player_callback *data)
 {
-        if (data->engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_HARD || data->engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_SOFT)
+        if (data->engine->state == ARAS_ENGINE_STATE_NULL)
                 aras_engine_set_state(data->engine, ARAS_ENGINE_STATE_PLAY_DEFAULT, data->configuration->fade_out_time);
 }
 
@@ -615,22 +615,22 @@ void aras_gui_player_update_file_progress_bar(struct aras_gui_player *gui, struc
 void aras_gui_player_update_buttons(struct aras_gui_player *gui, struct aras_engine *engine)
 {
         if (engine->playlist_current_node != NULL) {
-                if ((engine->playlist_current_node->prev != NULL) && ((engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_HARD) || (engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_SOFT)))
+                if ((engine->playlist_current_node->prev != NULL) && (engine->state == ARAS_ENGINE_STATE_NULL))
                         gtk_widget_set_sensitive(gui->button_backward, TRUE);
                 else
                         gtk_widget_set_sensitive(gui->button_backward, FALSE);
 
-                if ((engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_HARD) || (engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_SOFT))
+                if (engine->state == ARAS_ENGINE_STATE_NULL)
                         gtk_widget_set_sensitive(gui->button_repeat, TRUE);
                 else
                         gtk_widget_set_sensitive(gui->button_repeat, FALSE);
 
-                if ((engine->playlist_current_node->next != NULL) && ((engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_HARD) || (engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_SOFT)))
+                if ((engine->playlist_current_node->next != NULL) && (engine->state == ARAS_ENGINE_STATE_NULL))
                         gtk_widget_set_sensitive(gui->button_forward, TRUE);
                 else
                         gtk_widget_set_sensitive(gui->button_forward, FALSE);
 
-                if ((engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_HARD) || (engine->state == ARAS_ENGINE_STATE_MONITOR_SCHEDULE_SOFT))
+                if (engine->state == ARAS_ENGINE_STATE_NULL)
                         gtk_widget_set_sensitive(gui->button_eject, TRUE);
                 else
                         gtk_widget_set_sensitive(gui->button_eject, FALSE);
