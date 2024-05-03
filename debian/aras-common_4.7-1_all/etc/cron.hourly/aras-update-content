@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# This script generates a playlist from an XML podcast to be read from ARAS.
+# This script must be called by cron periodically.
+
+LOGFILE=/var/log/aras/events.log
+
+# Update playlist
+
+#PLAYLIST="/tmp/playlist.m3u"
+#FEED="http://ccmixter.org/api/query?sinced=4%20weeks%20ago&sort=num_scores&f=rss&limit=default"
+#FILTER_1="head -n 20"
+#FILTER_2="cat"
+#wget -q -O - "$FEED" | grep -o '<enclosure url="[^"]*' | grep -o '[^"]*$' | $FILTER_1 | $FILTER_2 > $PLAYLIST
+
+# Update another playlist
+
+#PLAYLIST="/tmp/another-playlist.m3u"
+#FEED="http://ccmixter.org/api/query?tags=hip_hop&sort=date&f=rss&limit=default"
+#FILTER_1="head -n 20"
+#FILTER_2="shuf"
+#wget -q -O - "$FEED" | grep -o '<enclosure url="[^"]*' | grep -o '[^"]*$' | $FILTER_1 | $FILTER_2 > $PLAYLIST
+
+# Write event to log
+
+DATE=$(date "+%Y-%m-%d %H:%M:%S")
+echo "$DATE aras-update-content Completed task" >> $LOGFILE

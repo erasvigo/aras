@@ -1,0 +1,27 @@
+####################################
+# The ARAS Radio Automation System #
+# Block file                       #
+####################################
+
+###################
+# 1 Default block #
+###################
+
+default         file        http://stream.streamaudio.de:8000/radio-piratona.ogg
+
+#######################
+# 2 Time signal block #
+#######################
+
+time_signal     playlist    /usr/share/aras/media/playlist.m3u
+
+####################
+# 3 Regular blocks #
+####################
+
+#file        file            /home/radio/Contents/show.ogg
+#playlist    playlist        /home/radio/Contents/playlist.m3u
+#song        randomfile      /home/radio/Music
+#music       random          /home/radio/Music
+#jingles     random          /home/radio/Jingles
+#rotation    interleave      "jingles music 1 4"

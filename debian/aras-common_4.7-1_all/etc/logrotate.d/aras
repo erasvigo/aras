@@ -1,0 +1,15 @@
+/var/log/aras/aras.log {
+  monthly
+  rotate 12
+  compress
+  copytruncate
+  notifempty
+}
+
+/var/log/aras/events.log {
+  monthly
+  rotate 12
+  compress
+  copytruncate
+  notifempty
+}

@@ -1,0 +1,109 @@
+aras (4.7-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Tue, 03 May 2024 12:00:00 +0200
+ 
+ aras (4.6-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Tue, 12 Jun 2020 12:00:00 +0200
+
+aras (4.5-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Tue, 24 Mar 2018 12:00:00 +0200
+
+aras (4.4-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Tue, 28 Mar 2017 12:00:00 +0200
+
+aras (4.3-1) unstable; urgency=low
+
+  * New upstream release.
+  * Defined read and write permissions for all users in log file
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Sun, 04 Sep 2016 12:00:00 +0200
+
+aras (4.2-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Sun, 28 Aug 2016 12:00:00 +0200
+
+aras (4.1-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Wed, 24 Aug 2016 12:00:00 +0200
+
+aras (4.0-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Fri, 12 Aug 2016 12:00:00 +0200
+
+aras (3.0-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Sun, 03 May 2015 12:00:00 +0200
+
+aras (2.10-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Tue, 23 Dec 2014 12:00:00 +0200
+
+aras (2.9-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Sun, 09 Oct 2011 12:00:00 +0200
+
+aras (2.7-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Sun, 03 Jul 2011 12:00:00 +0200
+
+aras (2.6-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Wed, 26 Jan 2011 12:00:00 +0200
+
+aras (2.4-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Sat, 15 Jan 2011 12:00:00 +0200
+
+aras (2.3-1) unstable; urgency=low
+
+  * New upstream release.
+  * Added upstream's man/txt and man/pdf to aras-common doc directory.
+
+ -- Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>  Fry, 02 Apr 2010 12:00:00 +0200
+
+aras (2.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * Added upstream's man/txt and man/pdf to aras-common doc directory.
+
+ -- martintxo <martintxo@localhost.localdomain>  Sun, 19 Apr 2009 12:17:39 +0200
+
+aras (2.1-1) unstable; urgency=low
+
+  * Initial Release.
+  * Added *.logrotate conf files.
+  * Added *.menu y *.desktop files.
+  * Added *doc-base files.
+  * Added /etc/init.d init script and its symlinks from /etc/rc*.d
+     in aras-deamon package.
+
+ -- martintxo <martintxo@localhost.localdomain>  Sun, 12 Apr 2009 19:44:52 +0200

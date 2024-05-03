@@ -1,0 +1,74 @@
+The ARAS Radio Automation System
+Copyright (C) 2020  Erasmo Alonso Iglesias
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Overview
+--------
+
+ARAS is a free broadcast automation system.  It provides the neccessary tools to
+automate a broadcast station.
+
+Availability
+------------
+
+The latest version of ARAS is available at
+https://sourceforge.net/projects/aras/.
+
+Documentation
+-------------
+
+The HTML documentation is included in the usr/share/doc/aras/html directory.
+Manual pages are inlcuded in the usr/share/man/man5 directory.
+
+Installation
+------------
+
+1. Unpack the distribution tarball:
+
+        $ tar xvzf aras-<version>.tar.gz
+        $ cd aras-<version>
+
+2. Change to the directory containing the unpacked source code:
+
+        cd aras-<version>
+
+3. Compile the package:
+
+        $ make
+
+4. Install binaries, data and documentation. This step may require root
+   privileges:
+
+        $ make install
+
+For further information on installing the package please see the file INSTALL.
+
+Reporting bugs
+--------------
+
+Report bugs to <erasmo1982@users.sourceforge.net>. Please include information
+enough to understand and reproduce the problem.
+
+Sending patches
+---------------
+
+Send patches for bug fixes and improvements to
+<erasmo1982@users.sourceforge.net>.
+
+Additional Information
+----------------------
+
+Up to date information and additons are available at the official project
+website under http://aras.sourceforge.net.

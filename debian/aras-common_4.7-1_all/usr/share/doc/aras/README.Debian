@@ -1,0 +1,82 @@
+ARAS (A Radio Automation System) for Debian
+---------------
+
+All the information sources about ARAS are in the aras-common package. 
+It is installed automatically as dependency of aras-daemon, aras-player and aras-recorder packages.
+
+The info about the configuration and use of this suite of applications
+is in the following man pages:
+
+- aras-daemon(1): player without graphical interface.
+
+- aras-player(1): player with graphical interface.
+
+- aras-recorder(1): recorder with graphical interface.
+
+- aras.conf(5): configuration file for ARAS.
+
+- aras.schedule(5): schedule description file for ARAS.
+
+- aras.block(5): blocks description file for ARAS.
+
+- aras.log(5): log file for ARAS.
+
+For view a man page try 'man app-name' in a console, o search for it in the
+Gnome or KDE help browsers, in the dwww Debian help system, or in Xman.
+
+You have more info too in /usr/share/doc/aras/html/* files.
+
+---------
+
+For configuring ARAS and the schedule and block files (the ones that controls
+the schedule of the sounds), you must go to the /etc/aras directory and use 
+these files (and man pages):
+
+- aras.conf: for the ARAS configuration file, see aras.conf(5) for info.
+
+- aras.schedule: for the ARAS schedule file, see aras.schedule(5) for info.
+
+- aras.block: for the ARAS block description file, see aras.block(5) for info.
+
+This files are mandatory for a proper run of ARAS.
+
+Example of these files are too in the /usr/share/doc/aras/examples directory.
+
+More info about all the configuration of ARAS is in /usr/share/doc/aras/html/*
+files.
+
+---------
+
+All the aras packages recomends the installation of the logrotate package. 
+It is because the aras log file (/var/log/aras.log normally) grows indefinitely
+without a log rotation.
+
+I put the /etc/logrotate.d/aras file for tell logrotate to rotate the 
+/var/log/aras/aras.log file in a weekly basis, and keep 7 compressed copies 
+of the log. You can change the log file, the periodicity and the amount of 
+copies stored by editing /etc/logrotate.d/aras file. See the logrotate(8) 
+man page.
+
+---------
+
+If you often have the: "File /var/log/aras/aras.log could not be opened" error
+message when starts aras as a normal user, it's because the aras log file was 
+created by root in the first moment. You can chown it to your user name (see 
+chown(1) man page), or simply delete it, and start aras as your user. 
+
+---------
+
+TODO for a true Debian developer:
+
+- Make a init.d script.
+
+- Consider to use debconf for the config of ARAS (/etc/aras/aras.conf).
+
+---------
+
+This is a unofficial package. 
+I'm not a Debian developer. 
+This is my third Debian package. 
+My english is horrible :-D.
+
+ -- martintxo <martintxo@localhost.localdomain>, Fry, 10 April 2009 15:55:53 +0100

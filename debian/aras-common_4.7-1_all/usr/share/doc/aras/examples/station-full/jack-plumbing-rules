@@ -1,0 +1,28 @@
+;
+; ARAS jack-plumbing patchbay
+;
+
+; Connect the block player output to the first element in the effect stack
+
+(connect "aras-player(.*):out_block_player_1" "Calf Studio Gear:multibandcompressor In #1")
+(connect "aras-player(.*):out_block_player_2" "Calf Studio Gear:multibandcompressor In #2")
+
+; Connect the time signal player output to the first element in the effect stack
+
+(connect "aras-player(.*):out_time_signal_player_1" "Calf Studio Gear:multibandcompressor In #1")
+(connect "aras-player(.*):out_time_signal_player_2" "Calf Studio Gear:multibandcompressor In #2")
+
+; Connect the effects with each other
+
+(connect "Calf Studio Gear:multibandcompressor Out #1" "Calf Studio Gear:emphasis In #1")
+(connect "Calf Studio Gear:multibandcompressor Out #2" "Calf Studio Gear:emphasis In #2")
+
+; Connect the effect stack output with the playback system
+
+(connect "Calf Studio Gear:emphasis Out #1" "system:playback_1")
+(connect "Calf Studio Gear:emphasis Out #2" "system:playback_2")
+
+; Additionally, connect the capture system to aras-recorder
+
+(connect "system:capture_1" "aras-recorder(.*):in_recorder_1")
+(connect "system:capture_2" "aras-recorder(.*):in_recorder_2")
