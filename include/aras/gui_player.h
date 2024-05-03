@@ -1,12 +1,12 @@
 /**
  * @file
  * @author  Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
- * @version 4.6
+ * @version 4.7
  *
  * @section LICENSE
  *
  * The ARAS Radio Automation System
- * Copyright (C) 2020  Erasmo Alonso Iglesias
+ * Copyright (C) 2024  Erasmo Alonso Iglesias
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,15 +38,15 @@
 
 #define ARAS_GUI_PLAYER_PATH_ICON       "/usr/share/aras/icons/aras-player-icon.png"
 #define ARAS_GUI_PLAYER_COMMENTS        "The ARAS Radio Automation System"
-#define ARAS_GUI_PLAYER_COPYRIGHT       "Copyright © 2020 Erasmo Alonso Iglesias"
+#define ARAS_GUI_PLAYER_COPYRIGHT       "Copyright © 2024 Erasmo Alonso Iglesias"
 #define ARAS_GUI_PLAYER_PROGRAM_NAME    "ARAS Player"
-#define ARAS_GUI_PLAYER_VERSION         "4.6"
+#define ARAS_GUI_PLAYER_VERSION         "4.7"
 #define ARAS_GUI_PLAYER_WEBSITE         "http://aras.sourceforge.net"
 #define ARAS_GUI_PLAYER_WEBSITE_LABEL   "ARAS website"
 
 #define ARAS_GUI_PLAYER_LICENSE \
 "The ARAS Radio Automation System\n\
-Copyright (C) 2020  Erasmo Alonso Iglesias\n\
+Copyright (C) 2024  Erasmo Alonso Iglesias\n\
 \n\
 This program is free software: you can redistribute it and/or modify\n\
 it under the terms of the GNU General Public License as published by\n\

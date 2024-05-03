@@ -1,12 +1,12 @@
 /**
  * @file
  * @author  Erasmo Alonso Iglesias <erasmo1982@users.sourceforge.net>
- * @version 4.6
+ * @version 4.7
  *
  * @section LICENSE
  *
  * The ARAS Radio Automation System
- * Copyright (C) 2020  Erasmo Alonso Iglesias
+ * Copyright (C) 2024  Erasmo Alonso Iglesias
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
