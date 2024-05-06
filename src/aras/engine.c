@@ -452,7 +452,8 @@ void aras_engine_monitor_schedule_soft(struct aras_engine *engine, struct aras_p
                                         aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_CURRENT, 0);
                                         engine->pending_playlist = 0;
                                 } else {
-                                        aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
+                                        if (engine->state == ARAS_ENGINE_STATE_NULL)
+                                                aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                                 }
                         }
                 }
@@ -532,7 +533,8 @@ void aras_engine_monitor_schedule_hard(struct aras_engine *engine, struct aras_p
                         if ((duration = aras_player_get_duration(player, player->current_unit)) != 0) {
                                 position = aras_player_get_position(player, player->current_unit);
                                 if (duration - position <= configuration->fade_out_time)
-                                        aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
+                                        if (engine->state == ARAS_ENGINE_STATE_NULL)
+                                                aras_engine_set_state(engine, ARAS_ENGINE_STATE_PLAY_NEXT, 0);
                         }
                 }
                 break;
